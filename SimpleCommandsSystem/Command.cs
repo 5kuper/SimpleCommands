@@ -7,6 +7,27 @@ namespace SimpleCommandsSystem
 {
     public class Command
     {
+        /// <summary>Used for the WriteWarning method.</summary>
+        public enum WarningType { WrongCommand, WrongArguments, Other }
+
+        public delegate void WriteTextDelegate(string text = "", bool newLine = true);
+        public delegate void WriteWarningDelegate(WarningType warningType = WarningType.Other, string otherWarningText = null);
+
+        /// <summary>
+        /// <see langword="delegate"/> <see langword="void"/> Command.WriteTextDelegate(string text = "", bool newLine = true)
+        /// <para>The default is WriteTextStandard method, which uses the Console.WriteLine and Console.Write methods.</para>
+        /// <para>Change it if you are not using System.Console in your program.</para>
+        /// </summary>
+        public static WriteTextDelegate WriteText { get; set; } = WriteTextStandard;
+
+        /// <summary>
+        /// <see langword="delegate"/> <see langword="void"/> Command.WriteWarningDelegate(WarningType warningType = WarningType.Other, string otherWarningText = null)
+        /// <para>The default is WriteWarningStandard method, which uses the WriteText method.</para>
+        /// <para>If set to the default, use the otherWarningText only if the warningType is WarningType.Other.</para>
+        /// <para>Change it if you are not using System.Console in your program.</para>
+        /// </summary>
+        public static WriteWarningDelegate WriteWarning { get; set; } = WriteWarningStandard;
+
         private static string _standardPrefix = "/";
         /// <summary>It will be sets for a command if it's prefix is <see langword="null"/> in the command attribute. The default is "/".</summary>
         public static string StandardPrefix 
@@ -94,6 +115,41 @@ namespace SimpleCommandsSystem
             Tags = attribute.Tags;
         }
 
+        public static void WriteTextStandard(string text = "", bool newLine = true)
+        {
+            if (newLine)
+            {
+                Console.WriteLine(text);
+            }
+            else
+            {
+                Console.Write(text);
+            }
+        }
+
+        public static void WriteWarningStandard(WarningType warningType = WarningType.Other, string otherWarningText = null)
+        {
+            switch (warningType)
+            {
+                case WarningType.WrongCommand:
+                    WriteText("Wrong command!");
+                    break;
+                case WarningType.WrongArguments:
+                    WriteText("Wrong arguments!");
+                    break;
+                case WarningType.Other:
+                    if (otherWarningText != null)
+                    {
+                        WriteText(otherWarningText);
+                    }
+                    else
+                    {
+                        WriteText("Error!");
+                    }
+                    break;
+            }
+        }
+
         /// <summary>Prepares commands from the class for use.</summary>
         /// <typeparam name="ClassWithCommands">The class with commands.</typeparam>
         public static void RegisterCommands<ClassWithCommands>()
@@ -134,19 +190,6 @@ namespace SimpleCommandsSystem
             return foundCommands;
         }
 
-        /// <summary>Executes the command.</summary>
-        public void Execute(params object[] parameters)
-        {
-            try
-            {
-                Method.Invoke(null, parameters);
-            }
-            catch
-            {
-                Console.WriteLine("Wrong parameters!");
-            }
-        }
-
         /// <summary>
         /// Parses the message to a command and executes it.
         /// If the message by arguments matches several commands, the one that was added earlier is called.
@@ -158,7 +201,7 @@ namespace SimpleCommandsSystem
 
             string commandPrefix;
             string commandName;
-            List<object> parameterValues = new List<object>();
+            List<object> arguments = new List<object>();
 
             List<Command> matchingCommands = new List<Command>();
             List<Command> unmatchingCommands = new List<Command>();
@@ -194,13 +237,13 @@ namespace SimpleCommandsSystem
             words.Remove(commandName);
             foreach (string word in words)
             {
-                parameterValues.Add(word);
+                arguments.Add(word);
             }
 
             foreach (Command command in matchingCommands)
             {
                 ParameterInfo[] parametersInfo = command.Method.GetParameters();
-                if (command.Prefix != commandPrefix || parametersInfo.Length != parameterValues.Count)
+                if (command.Prefix != commandPrefix || parametersInfo.Length != arguments.Count)
                 {
                     unmatchingCommands.Add(command);
                 }
@@ -213,7 +256,7 @@ namespace SimpleCommandsSystem
 
             if (matchingCommands.Count == 0)
             {
-                Console.WriteLine("Wrong command!");
+                WriteWarning(WarningType.WrongCommand);
                 return;
             }
             #endregion
@@ -232,19 +275,19 @@ namespace SimpleCommandsSystem
                         for (int i = 0; i < parametersInfo.Length; i++)
                         {
                             Type type = parametersInfo[i].ParameterType;
-                            parameterValues[i] = Convert.ChangeType(parameterValues[i], type);
+                            arguments[i] = Convert.ChangeType(arguments[i], type);
                         }
                     }
                     catch
                     {
                         if (command == matchingCommands.Last())
                         {
-                            Console.WriteLine("Wrong parameters!");
+                            WriteWarning(WarningType.WrongArguments);
                         }
                         continue;
                     }
 
-                    command.Execute(parameterValues.ToArray());
+                    command.Execute(arguments.ToArray());
                     return;
                 }
                 else
@@ -254,6 +297,19 @@ namespace SimpleCommandsSystem
                 }
             }
             #endregion
+        }
+
+        /// <summary>Executes the command.</summary>
+        public void Execute(params object[] parameters)
+        {
+            try
+            {
+                Method.Invoke(null, parameters);
+            }
+            catch
+            {
+                WriteWarning(WarningType.WrongArguments);
+            }
         }
     }
 

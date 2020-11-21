@@ -9,6 +9,10 @@ namespace SimpleCommandsSystem
         {
             Console.Title = "Simple Commands System";
 
+            // If you are not using System.Console in your program,
+            // change the Command.WriteText and Command.WriteWarning
+            // and change or don't use ConsoleCommands class
+
             // Setting standard values
             Command.StandardPrefix = "!";
             Command.StandardDescription = "No desc!";
@@ -29,15 +33,6 @@ namespace SimpleCommandsSystem
                 Command.Execute(message); // Parses the message to a command and executes it
                 Console.WriteLine();
             }
-        }
-
-        public static void WriteHorizontalLine(int size)
-        {
-            for (int i = 0; i < size; i++)
-            {
-                Console.Write("-");
-            }
-            Console.WriteLine();
         }
     }
 }

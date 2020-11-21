@@ -4,14 +4,14 @@ using System.Threading;
 
 namespace SimpleCommandsSystem.CommandLists
 {
-    class ConsoleCommands
+    class ConsoleCommands // Change or don't use this class if you are not using System.Console in your program
     {
         private ConsoleCommands() { }
 
         [Command("c!", "beep", null)]
         public static void BeepCommand()
         {
-            Console.WriteLine("Beep!");
+            Command.WriteText("Beep!");
             Console.Beep();
         }
 
@@ -20,18 +20,18 @@ namespace SimpleCommandsSystem.CommandLists
         {
             if (quantity > 0)
             {
-                Console.Write("B");
+                Command.WriteText("B", false);
                 for (int i = 0; i < quantity; i++)
                 {
                     Thread.Sleep(100);
-                    Console.Write("e");
+                    Command.WriteText("e", false);
                     Console.Beep();
                 }
-                Console.Write("p!\n");
+                Command.WriteText("p!\n", false);
             }
             else
             {
-                Console.WriteLine("Not beep!");
+                Command.WriteText("Not beep!");
             }
         }
 
@@ -41,11 +41,11 @@ namespace SimpleCommandsSystem.CommandLists
             try
             {
                 Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colorName, true);
-                Console.WriteLine($"Foreground color changed to {Console.ForegroundColor}");
+                Command.WriteText($"Foreground color changed to {Console.ForegroundColor}");
             }
             catch
             {
-                Console.WriteLine("Wrong color name!");
+                Command.WriteWarning(otherWarningText: "Wrong color name!");
             }
         }
 
@@ -55,11 +55,11 @@ namespace SimpleCommandsSystem.CommandLists
             try
             {
                 Console.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colorName, true);
-                Console.WriteLine($"Background color changed to {Console.BackgroundColor}");
+                Command.WriteText($"Background color changed to {Console.BackgroundColor}");
             }
             catch
             {
-                Console.WriteLine("Wrong color name!");
+                Command.WriteWarning(otherWarningText: "Wrong color name!");
             }
         }
     }
