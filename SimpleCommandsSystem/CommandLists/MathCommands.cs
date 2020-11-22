@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using static SimpleCommandsSystem.Command;
+using static SimpleCommandsSystem.Text;
 
 namespace SimpleCommandsSystem.CommandLists
 {
@@ -16,11 +16,11 @@ namespace SimpleCommandsSystem.CommandLists
             {
                 using DataTable table = new DataTable();
                 object result = table.Compute(expression, string.Empty);
-                Command.WriteText($"Result: {result}");
+                Text.Write($"Result: {result}");
             }
             catch
             {
-                Command.WriteWarning(WarningType.Other, "Wrong expression!");
+                Text.Warn(WarningType.Other, "Wrong expression!");
             }
         }
 
@@ -28,7 +28,7 @@ namespace SimpleCommandsSystem.CommandLists
         public static void RandomCommand()
         {
             Random random = new Random();
-            Command.WriteText($"Result: {random.Next()}");
+            Text.Write($"Result: {random.Next()}");
         }
 
         [Command("m!", "random", null), Command("m!", "rnd", null)]
@@ -37,17 +37,17 @@ namespace SimpleCommandsSystem.CommandLists
             try
             {
                 Random random = new Random();
-                Command.WriteText($"Result: {random.Next(minValue, maxValue)}");
+                Text.Write($"Result: {random.Next(minValue, maxValue)}");
             }
             catch (Exception e)
             {
                 if (e is System.ArgumentOutOfRangeException)
                 {
-                    Command.WriteWarning(otherWarningText: "Wrong arguments! minValue cannot be greater than maxValue!");
+                    Text.Warn(otherWarningText: "Wrong arguments! minValue cannot be greater than maxValue!");
                 }
                 else
                 {
-                    Command.WriteWarning(WarningType.WrongArguments);
+                    Text.Warn(WarningType.WrongArguments);
                 }
             }
         }

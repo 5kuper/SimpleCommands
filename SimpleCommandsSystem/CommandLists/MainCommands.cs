@@ -10,7 +10,7 @@ namespace SimpleCommandsSystem.CommandLists
         [Command(null, "help", null)]
         public static void HelpCommand()
         {
-            Command.WriteText("All commands:");
+            Text.Write("All commands:");
             foreach (Command command in Command.Commands)
             {
                 string parametersInfo = String.Empty;
@@ -18,17 +18,8 @@ namespace SimpleCommandsSystem.CommandLists
                 {
                     parametersInfo += $" {parameter.ParameterType.Name} {parameter.Name}";
                 }
-                Command.WriteText($"{command.Prefix}{command.Name}{parametersInfo} - {command.Description}");
+                Text.Write($"{command.Prefix}{command.Name}{parametersInfo} - {command.Description}");
             }
-        }
-
-        public static void WriteHorizontalLine(int size)
-        {
-            for (int i = 0; i < size; i++)
-            {
-                Command.WriteText("-", false);
-            }
-            Command.WriteText();
         }
     }
 }

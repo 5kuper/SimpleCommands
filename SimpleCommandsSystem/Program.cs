@@ -10,8 +10,7 @@ namespace SimpleCommandsSystem
             Console.Title = "Simple Commands System";
 
             // If you are not using System.Console in your program,
-            // change the Command.WriteText and Command.WriteWarning
-            // and change or don't use ConsoleCommands class
+            // change the Text.Read and Text.Write and change or don't use the ConsoleCommands class
 
             // Setting standard values
             Command.StandardPrefix = "!";
@@ -22,16 +21,18 @@ namespace SimpleCommandsSystem
             Command.RegisterCommands<ConsoleCommands>();
             Command.RegisterCommands<MathCommands>();
 
-            Console.WriteLine("Enter \"!help\" to get a list of commands\n");
+            Text.Write("Enter ", false);
+            Text.Write("!help ", false, nameof(ConsoleColor.Cyan));
+            Text.Write("to get a list of commands\n");
 
             while (true)
             {
-                Console.WriteLine("Enter a command:");
-                string message = Console.ReadLine();
+                Text.Write("Enter a command:");
+                string message = Text.Read();
 
-                Console.WriteLine();
+                Text.Write();
                 Command.Execute(message); // Parses the message to a command and executes it
-                Console.WriteLine();
+                Text.Write();
             }
         }
     }

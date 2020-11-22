@@ -11,7 +11,7 @@ namespace SimpleCommandsSystem.CommandLists
         [Command("c!", "beep", null)]
         public static void BeepCommand()
         {
-            Command.WriteText("Beep!");
+            Text.Write("Beep!");
             Console.Beep();
         }
 
@@ -20,18 +20,18 @@ namespace SimpleCommandsSystem.CommandLists
         {
             if (quantity > 0)
             {
-                Command.WriteText("B", false);
+                Text.Write("B", false);
                 for (int i = 0; i < quantity; i++)
                 {
                     Thread.Sleep(100);
-                    Command.WriteText("e", false);
+                    Text.Write("e", false);
                     Console.Beep();
                 }
-                Command.WriteText("p!\n", false);
+                Text.Write("p!\n", false);
             }
             else
             {
-                Command.WriteText("Not beep!");
+                Text.Write("Not beep!");
             }
         }
 
@@ -41,11 +41,11 @@ namespace SimpleCommandsSystem.CommandLists
             try
             {
                 Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colorName, true);
-                Command.WriteText($"Foreground color changed to {Console.ForegroundColor}");
+                Text.Write($"Foreground color changed to {Console.ForegroundColor}");
             }
             catch
             {
-                Command.WriteWarning(otherWarningText: "Wrong color name!");
+                Text.Warn(otherWarningText: "Wrong color name!");
             }
         }
 
@@ -55,11 +55,11 @@ namespace SimpleCommandsSystem.CommandLists
             try
             {
                 Console.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colorName, true);
-                Command.WriteText($"Background color changed to {Console.BackgroundColor}");
+                Text.Write($"Background color changed to {Console.BackgroundColor}");
             }
             catch
             {
-                Command.WriteWarning(otherWarningText: "Wrong color name!");
+                Text.Warn(otherWarningText: "Wrong color name!");
             }
         }
     }
