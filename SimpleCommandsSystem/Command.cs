@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SimpleCommandsSystem
 {
@@ -150,6 +151,8 @@ namespace SimpleCommandsSystem
             List<Command> matchingCommands = new List<Command>();
             List<Command> unmatchingCommands = new List<Command>();
 
+            bool oneUnmatchingCommandMatchesPrefix = false;
+
             #region Finding a prefix
             foreach (string prefix in Prefixes)
             {
@@ -172,22 +175,26 @@ namespace SimpleCommandsSystem
             #region Finding matching commands
             message = message.Substring(commandPrefix.Length);
 
-            // TODO: Don't split words if it is in quotes
-            words.AddRange(message.Split(' '));
+            words.AddRange(Regex.Split(message, " (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Select(s => s.Replace("\"", "")));
 
             commandName = words[0];
             matchingCommands = Find(commandName);
 
             words.Remove(commandName);
-            foreach (string word in words)
-            {
-                arguments.Add(word);
-            }
+            arguments.AddRange(words.Select(s => s));
 
             foreach (Command command in matchingCommands)
             {
                 ParameterInfo[] parametersInfo = command.Method.GetParameters();
-                if (command.Prefix != commandPrefix || parametersInfo.Length != arguments.Count)
+                if (command.Prefix != commandPrefix)
+                {
+                    unmatchingCommands.Add(command);
+                }
+                else
+                {
+                    oneUnmatchingCommandMatchesPrefix = true;
+                }
+                if (parametersInfo.Length != arguments.Count)
                 {
                     unmatchingCommands.Add(command);
                 }
@@ -200,7 +207,14 @@ namespace SimpleCommandsSystem
 
             if (matchingCommands.Count == 0)
             {
-                Text.Warn(Text.WarningType.WrongCommand);
+                if (oneUnmatchingCommandMatchesPrefix)
+                {
+                    Text.Warn(Text.WarningType.WrongArguments);
+                }
+                else
+                {
+                    Text.Warn(Text.WarningType.WrongCommand);
+                } 
                 return;
             }
             #endregion

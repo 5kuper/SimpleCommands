@@ -41,7 +41,7 @@ namespace SimpleCommandsSystem.CommandLists
             }
             catch (Exception e)
             {
-                if (e is System.ArgumentOutOfRangeException)
+                if (e is ArgumentOutOfRangeException)
                 {
                     Text.Warn(otherWarningText: "Wrong arguments! minValue cannot be greater than maxValue!");
                 }

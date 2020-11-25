@@ -20,6 +20,7 @@ namespace SimpleCommandsSystem
             Command.RegisterCommands<MainCommands>();
             Command.RegisterCommands<ConsoleCommands>();
             Command.RegisterCommands<MathCommands>();
+            Command.RegisterCommands<FileCommands>();
 
             Text.Write("Enter ", false);
             Text.Write("!help ", false, nameof(ConsoleColor.Cyan));
