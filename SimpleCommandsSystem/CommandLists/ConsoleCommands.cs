@@ -9,16 +9,14 @@ namespace SimpleCommandsSystem.CommandLists
         private ConsoleCommands() { }
 
         [Command("c!", "beep", null)]
-        public static void BeepCommand()
+        public static void BeepCommand(int quantity = 1)
         {
-            Text.Write("Beep!");
-            Console.Beep();
-        }
-
-        [Command("c!", "beep", null)]
-        public static void BeepCommand(int quantity)
-        {
-            if (quantity > 0)
+            if (quantity == 1)
+            {
+                Text.Write("Beep!");
+                Console.Beep();
+            }
+            else if (quantity > 1)
             {
                 Text.Write("B", false);
                 for (int i = 0; i < quantity; i++)

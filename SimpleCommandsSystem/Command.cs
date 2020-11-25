@@ -119,15 +119,15 @@ namespace SimpleCommandsSystem
             }
         }
 
-        /// <summary>Finds and returns a list of commands with the specified name.</summary>
-        public static List<Command> Find(string name) 
+        /// <summary>Finds and returns a list of commands with the specified prefix and name.</summary>
+        public static List<Command> Find(string prefix, string name) 
         {
-            // TODO: Find by prefix, description, tags, class and more
+            // TODO: Find by one or more parameters (name, prefix, description, tags, class and more)
 
             List<Command> foundCommands = new List<Command>();
             foreach (Command command in Commands)
             {
-                if (command.Name == name)
+                if (command.Prefix == prefix && command.Name == name)
                 {
                     foundCommands.Add(command);
                 }
@@ -149,9 +149,6 @@ namespace SimpleCommandsSystem
             List<object> arguments = new List<object>();
 
             List<Command> matchingCommands = new List<Command>();
-            List<Command> unmatchingCommands = new List<Command>();
-
-            bool oneUnmatchingCommandMatchesPrefix = false;
 
             #region Finding a prefix
             foreach (string prefix in Prefixes)
@@ -178,48 +175,19 @@ namespace SimpleCommandsSystem
             words.AddRange(Regex.Split(message, " (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Select(s => s.Replace("\"", "")));
 
             commandName = words[0];
-            matchingCommands = Find(commandName);
-
-            words.Remove(commandName);
-            arguments.AddRange(words.Select(s => s));
-
-            foreach (Command command in matchingCommands)
-            {
-                ParameterInfo[] parametersInfo = command.Method.GetParameters();
-                if (command.Prefix != commandPrefix)
-                {
-                    unmatchingCommands.Add(command);
-                }
-                else
-                {
-                    oneUnmatchingCommandMatchesPrefix = true;
-                }
-                if (parametersInfo.Length != arguments.Count)
-                {
-                    unmatchingCommands.Add(command);
-                }
-            }
-
-            foreach (Command command in unmatchingCommands)
-            {
-                matchingCommands.Remove(command);
-            }
+            matchingCommands = Find(commandPrefix, commandName);
 
             if (matchingCommands.Count == 0)
             {
-                if (oneUnmatchingCommandMatchesPrefix)
-                {
-                    Text.Warn(Text.WarningType.WrongArguments);
-                }
-                else
-                {
-                    Text.Warn(Text.WarningType.WrongCommand);
-                } 
+                Text.Warn(Text.WarningType.WrongCommand);
                 return;
             }
             #endregion
 
-            #region Finding parameters and executing the most matching command
+            #region Finding arguments and executing the most matching command
+            words.Remove(commandName);
+            arguments.AddRange(words.Select(s => s));
+
             foreach (Command command in matchingCommands)
             {
                 if (command.ContainsParameters)
@@ -233,7 +201,15 @@ namespace SimpleCommandsSystem
                         for (int i = 0; i < parametersInfo.Length; i++)
                         {
                             Type type = parametersInfo[i].ParameterType;
-                            arguments[i] = Convert.ChangeType(arguments[i], type);
+                            if (i < arguments.Count)
+                            {
+                                arguments[i] = Convert.ChangeType(arguments[i], type);
+                            }
+                            else
+                            {
+                                arguments.Add(parametersInfo[i].DefaultValue);
+                            }
+                            
                         }
                     }
                     catch
