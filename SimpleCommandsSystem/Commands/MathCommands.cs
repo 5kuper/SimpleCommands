@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using static SimpleCommandsSystem.Text;
+using SCS.System;
+using SCS.Commands;
+using static SCS.System.Text;
 
-namespace SimpleCommandsSystem.CommandLists
+namespace SCS.Commands
 {
     class MathCommands
     {

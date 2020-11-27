@@ -1,7 +1,8 @@
 ﻿using System;
-using SimpleCommandsSystem.CommandLists;
+using SCS.System;
+using SCS.Commands;
 
-namespace SimpleCommandsSystem
+namespace SCS // SCS - Simple Commands System
 {
     class Program
     {

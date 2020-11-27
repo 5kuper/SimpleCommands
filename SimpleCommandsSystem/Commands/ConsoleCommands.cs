@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using SCS.System;
+using SCS.Commands;
 
-namespace SimpleCommandsSystem.CommandLists
+namespace SCS.Commands
 {
     class ConsoleCommands // Change or don't use this class if you are not using System.Console in your program
     {

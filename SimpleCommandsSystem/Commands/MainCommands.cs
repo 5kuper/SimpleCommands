@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reflection;
+using SCS.System;
+using SCS.Commands;
 
-namespace SimpleCommandsSystem.CommandLists
+namespace SCS.Commands
 {
     class MainCommands
     {

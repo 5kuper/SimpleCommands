@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SimpleCommandsSystem
+namespace SCS.System
 {
-    static class Text
+    public static class Text
     {
         /// <summary>Used for the Warn method.</summary>
         public enum WarningType { WrongCommand, WrongArguments, Other }
