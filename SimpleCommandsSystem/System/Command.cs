@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Text.RegularExpressions;
+using SimpleScanner = SCS.System.SimpleCommandScanner;
+using StringScanner = SCS.System.StringCommandScanner;
 
 namespace SCS.System
 {
@@ -119,17 +121,23 @@ namespace SCS.System
             }
         }
 
-        /// <summary>Finds and returns a list of commands with the specified prefix and name.</summary>
-        public static List<Command> Find(string prefix, string name) 
+        /// <summary>Finds and returns a list of commands matching the specified filters.</summary>
+        public static List<Command> Find(params CommandScanner[] filters) 
         {
-            // TODO: Find by one or more parameters (name, prefix, description, tags, class and more)
-
             List<Command> foundCommands = new List<Command>();
             foreach (Command command in Commands)
             {
-                if (command.Prefix == prefix && command.Name == name)
+                foreach (CommandScanner commandScanner in filters)
                 {
-                    foundCommands.Add(command);
+                    if (commandScanner.Scan(command) == false)
+                    {
+                        break;
+                    }
+                    else if (filters.Last() == commandScanner)
+                    {
+                        foundCommands.Add(command);
+                        break;
+                    }
                 }
             }
             return foundCommands;
@@ -175,7 +183,7 @@ namespace SCS.System
             words.AddRange(Regex.Split(message, " (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Select(s => s.Replace("\"", "")));
 
             commandName = words[0];
-            matchingCommands = Find(commandPrefix, commandName);
+            matchingCommands = Find(new StringScanner(commandPrefix, StringScanner.TargetOfScanner.Prefix), new StringScanner(commandName));
 
             if (matchingCommands.Count == 0)
             {
