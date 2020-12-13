@@ -26,14 +26,14 @@ namespace SCS.Commands
             }
         }
 
-        [Command("m!", "random", null), Command("m!", "rnd", null)]
+        [Command("m!", "random", null), Command("m!", "rnd", null, "Help Ignore")]
         public static void RandomCommand()
         {
             Random random = new Random();
             Text.Write($"Result: {random.Next()}");
         }
 
-        [Command("m!", "random", null), Command("m!", "rnd", null)]
+        [Command("m!", "random", null), Command("m!", "rnd", null, "Help Ignore")]
         public static void RandomCommand(int minValue, int maxValue)
         {
             try

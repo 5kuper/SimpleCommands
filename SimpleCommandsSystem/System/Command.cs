@@ -75,7 +75,7 @@ namespace SCS.System
         }
 
         public string Description { get; private set; } 
-        public string[] Tags { get; private set; } // It will be used for filter search and something else, maybe...
+        public List<string> Tags { get; private set; } // It will be used for filter search and something else, maybe...
 
         public readonly MethodInfo Method;
         public readonly MemberInfo Class;
@@ -94,7 +94,7 @@ namespace SCS.System
             Prefix = attribute.Prefix;
             Name = attribute.Name;
             Description = attribute.Description;
-            Tags = attribute.Tags;
+            Tags = attribute.Tags.ToList();
         }
 
         /// <summary>Prepares commands from the class for use.</summary>
@@ -177,13 +177,27 @@ namespace SCS.System
             }
             #endregion
 
-            #region Finding matching commands
+            #region Finding matching commands and arguments
             message = message.Substring(commandPrefix.Length);
 
             words.AddRange(Regex.Split(message, " (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Select(s => s.Replace("\"", "")));
 
             commandName = words[0];
-            matchingCommands = Find(new StringScanner(commandPrefix, StringScanner.TargetOfScanner.Prefix), new StringScanner(commandName));
+            words.Remove(commandName);
+            arguments.AddRange(words.Select(s => s));
+
+            StringScanner prefixScanner = new StringScanner(commandPrefix, StringScanner.TargetOfScanner.Prefix);
+            StringScanner nameScanner = new StringScanner(commandName, StringScanner.TargetOfScanner.Name);
+            SimpleScanner containsParametersScanner = new SimpleScanner(true, SimpleScanner.TargetOfScanner.ContainsParameters);
+
+            if (arguments.Count > 0)
+            {
+                matchingCommands = Find(prefixScanner, nameScanner, containsParametersScanner);
+            }
+            else
+            {
+                matchingCommands = Find(prefixScanner, nameScanner);
+            }
 
             if (matchingCommands.Count == 0)
             {
@@ -192,10 +206,7 @@ namespace SCS.System
             }
             #endregion
 
-            #region Finding arguments and executing the most matching command
-            words.Remove(commandName);
-            arguments.AddRange(words.Select(s => s));
-
+            #region Executing the most matching command
             foreach (Command command in matchingCommands)
             {
                 if (command.ContainsParameters)
@@ -216,8 +227,7 @@ namespace SCS.System
                             else
                             {
                                 arguments.Add(parametersInfo[i].DefaultValue);
-                            }
-                            
+                            } 
                         }
                     }
                     catch

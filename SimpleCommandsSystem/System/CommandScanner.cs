@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace SCS.System
 {
     public abstract class CommandScanner
     {
-        public enum TargetOfScanner { Prefix, Name, Description, Tags, Method, Class, MethodName, ClassName, Parameters, ContainsParameters }
+        public enum TargetOfScanner { Prefix, Name, Description, Tags, Method, Class, MethodName, ClassName, ContainsParameters }
 
         public TargetOfScanner TargetOfScan { get; private set; }
 
@@ -43,9 +45,6 @@ namespace SCS.System
                 case TargetOfScanner.ClassName:
                     result = Scan(command.Class.Name);
                     break;
-                case TargetOfScanner.Parameters:
-                    result = Scan(command.Parameters);
-                    break;
                 case TargetOfScanner.ContainsParameters:
                     result = Scan(command.ContainsParameters);
                     break;
@@ -59,14 +58,14 @@ namespace SCS.System
 
     public class SimpleCommandScanner : CommandScanner
     {
-        new public enum TargetOfScanner { Prefix, Name, Description, Tags, Method, Class, MethodName, ClassName, Parameters, ContainsParameters }
+        new public enum TargetOfScanner { Prefix, Name, Description, Tags, Method, Class, MethodName, ClassName, ContainsParameters }
         public enum ScannerCondition { Equals, NotEquals }
 
         public object ScanValue { get; private set; }
         public ScannerCondition ScanCondition { get; private set; }
 
-        public SimpleCommandScanner(object scanValue, TargetOfScanner scanTarget = TargetOfScanner.Name, ScannerCondition scanCondition = ScannerCondition.Equals) 
-            : base((CommandScanner.TargetOfScanner)scanTarget) 
+        public SimpleCommandScanner(object scanValue, TargetOfScanner scanTarget, ScannerCondition scanCondition = ScannerCondition.Equals)
+            : base((CommandScanner.TargetOfScanner)Enum.Parse(typeof(CommandScanner.TargetOfScanner), scanTarget.ToString()))
         {
             ScanValue = scanValue;
             ScanCondition = scanCondition;
@@ -74,7 +73,7 @@ namespace SCS.System
 
         public override bool Scan(object valueOfTarget)
         {
-            bool result = valueOfTarget == ScanValue;
+            bool result = Object.Equals(valueOfTarget, ScanValue);
             if (ScanCondition == ScannerCondition.NotEquals)
             {
                 result = !result;
@@ -91,8 +90,8 @@ namespace SCS.System
         public string ScanValue { get; private set; }
         public ScannerCondition ScanCondition { get; private set; }
 
-        public StringCommandScanner(string scanValue, TargetOfScanner scanTarget = TargetOfScanner.Name, ScannerCondition scanCondition = ScannerCondition.Equals) 
-            : base((CommandScanner.TargetOfScanner)scanTarget)
+        public StringCommandScanner(string scanValue, TargetOfScanner scanTarget, ScannerCondition scanCondition = ScannerCondition.Equals)
+            : base((CommandScanner.TargetOfScanner)Enum.Parse(typeof(CommandScanner.TargetOfScanner), scanTarget.ToString()))
         {
             ScanValue = scanValue;
             ScanCondition = scanCondition;
@@ -118,7 +117,45 @@ namespace SCS.System
 
             return result;
         }
+    }
 
-        // TODO: ArrayCommandScanner
+    public class ListCommandScanner : CommandScanner
+    {
+        new public enum TargetOfScanner { Tags }
+        public enum ScannerCondition { Contains, NotContains }
+
+        public object ScanValue { get; private set; }
+        public ScannerCondition ScanCondition { get; private set; }
+
+        public ListCommandScanner(object scanValue, TargetOfScanner scanTarget = TargetOfScanner.Tags, ScannerCondition scanCondition = ScannerCondition.Contains)
+            : base((CommandScanner.TargetOfScanner)Enum.Parse(typeof(CommandScanner.TargetOfScanner), scanTarget.ToString()))
+        {
+            ScanValue = scanValue;
+            ScanCondition = scanCondition;
+        }
+
+        public override bool Scan(object valueOfTarget)
+        {
+            List<object> objectList = new List<object>();
+
+            if (TargetOfScan == CommandScanner.TargetOfScanner.Tags)
+            {
+                List<string> typedList = (List<string>)valueOfTarget;
+
+                for (int i = 0; i < typedList.Count; i++)
+                {
+                    objectList.Add(typedList[i]);
+                }
+            }
+
+            bool result = objectList.Contains(ScanValue);
+
+            if (ScanCondition == ScannerCondition.NotContains)
+            {
+                result = !result;
+            }
+
+            return result;
+        }
     }
 }

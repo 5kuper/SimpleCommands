@@ -2,6 +2,8 @@
 using System.Reflection;
 using SCS.System;
 using SCS.Commands;
+using System.Collections.Generic;
+using ListScanner = SCS.System.ListCommandScanner;
 
 namespace SCS.Commands
 {
@@ -9,11 +11,13 @@ namespace SCS.Commands
     {
         private MainCommands() { }
 
-        [Command(null, "help", null)]
+        [Command(null, "help", null, "Help Ignore")]
         public static void HelpCommand()
         {
-            Text.Write("All commands:");
-            foreach (Command command in Command.Commands)
+            List<Command> commands = Command.Find(new ListScanner("Help Ignore", ListScanner.TargetOfScanner.Tags, ListScanner.ScannerCondition.NotContains));
+
+            Text.Write("Commands:");
+            foreach (Command command in commands)
             {
                 string parametersInfo = String.Empty;
                 foreach (ParameterInfo parameter in command.Parameters)
