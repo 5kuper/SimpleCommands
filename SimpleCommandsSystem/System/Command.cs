@@ -75,7 +75,7 @@ namespace SCS.System
         }
 
         public string Description { get; private set; } 
-        public List<string> Tags { get; private set; } // It will be used for filter search and something else, maybe...
+        public List<string> Tags { get; private set; } 
 
         public readonly MethodInfo Method;
         public readonly MemberInfo Class;
@@ -121,7 +121,36 @@ namespace SCS.System
             }
         }
 
-        /// <summary>Finds and returns a list of commands matching the specified filters.</summary>
+        /// <summary>Prepares commands from the class for use.</summary>
+        /// <param name="classesWithCommands">The classes with commands.</param>
+        public static void RegisterCommands(params Type[] classesWithCommands)
+        {
+            foreach (Type type in classesWithCommands)
+            {
+                MethodInfo[] methods = type.GetMethods();
+
+                foreach (MethodInfo method in methods)
+                {
+                    if (method.IsStatic)
+                    {
+                        var attrebutes = method.GetCustomAttributes(false);
+
+                        foreach (var attrebute in attrebutes)
+                        {
+                            if (attrebute is CommandAttribute commandAttribute)
+                            {
+                                Commands.Add(new Command(method, commandAttribute));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds and returns a list of commands matching the specified filters.
+        /// <para>Available filters: SimpleCommandScanner (Equals/NotEquals), StringCommandScanner (Contains/NotContains), ListCommandScanner (Contains/NotContains)</para>
+        /// </summary>
         public static List<Command> Find(params CommandScanner[] filters) 
         {
             List<Command> foundCommands = new List<Command>();
@@ -136,7 +165,6 @@ namespace SCS.System
                     else if (filters.Last() == commandScanner)
                     {
                         foundCommands.Add(command);
-                        break;
                     }
                 }
             }

@@ -18,7 +18,7 @@ namespace SCS.System
         public CommandAttribute(string prefix, string name, string description, params string[] tags)
         {
             Prefix = prefix ?? Command.StandardPrefix;
-            Name = name;
+            Name = name ?? "null";
             Description = description ?? Command.StandardDescription;
             Tags = tags ?? new string[0];
         }
