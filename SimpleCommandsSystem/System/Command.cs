@@ -24,7 +24,7 @@ namespace SCS.System
             }
         }
 
-        private static string _standardDescription = "No description";
+        private static string _standardDescription = "No description.";
         /// <summary>It will be sets for a command if it's description is <see langword="null"/> in the command attribute. The default is "No description".</summary>
         public static string StandardDescription
         {
@@ -70,7 +70,7 @@ namespace SCS.System
             }
             private set
             {
-                _name = value.Replace(" ", ""); ;
+                _name = value.Replace(" ", "");
             }
         }
 
@@ -98,25 +98,19 @@ namespace SCS.System
         }
 
         /// <summary>Prepares commands from the class for use.</summary>
-        /// <typeparam name="ClassWithCommands">The class with commands.</typeparam>
-        public static void RegisterCommands<ClassWithCommands>()
+        /// <typeparam name="TClassWithCommands">The class with commands.</typeparam>
+        public static void RegisterCommands<TClassWithCommands>()
         {
-            Type type = typeof(ClassWithCommands);
-            MethodInfo[] methods = type.GetMethods();
+            Type type = typeof(TClassWithCommands);
+            MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 
             foreach (MethodInfo method in methods)
             {
-                if (method.IsStatic)
-                {
-                    var attrebutes = method.GetCustomAttributes(false);
+                var attributes = method.GetCustomAttributes(typeof(CommandAttribute));
 
-                    foreach (var attrebute in attrebutes)
-                    {
-                        if (attrebute is CommandAttribute commandAttribute)
-                        {
-                            Commands.Add(new Command(method, commandAttribute));
-                        }
-                    }
+                foreach (var attribute in attributes)
+                {
+                    Commands.Add(new Command(method, (CommandAttribute)attribute));
                 }
             }
         }
@@ -127,21 +121,15 @@ namespace SCS.System
         {
             foreach (Type type in classesWithCommands)
             {
-                MethodInfo[] methods = type.GetMethods();
+                MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 
                 foreach (MethodInfo method in methods)
                 {
-                    if (method.IsStatic)
-                    {
-                        var attrebutes = method.GetCustomAttributes(false);
+                    var attributes = method.GetCustomAttributes(typeof(CommandAttribute));
 
-                        foreach (var attrebute in attrebutes)
-                        {
-                            if (attrebute is CommandAttribute commandAttribute)
-                            {
-                                Commands.Add(new Command(method, commandAttribute));
-                            }
-                        }
+                    foreach (var attribute in attributes)
+                    {
+                        Commands.Add(new Command(method, (CommandAttribute)attribute));
                     }
                 }
             }
@@ -184,7 +172,7 @@ namespace SCS.System
             string commandName;
             List<object> arguments = new List<object>();
 
-            List<Command> matchingCommands = new List<Command>();
+            List<Command> matchingCommands;
 
             #region Finding a prefix
             foreach (string prefix in Prefixes)

@@ -15,7 +15,7 @@ namespace SCS // SCS - Simple Commands System
 
             // Setting standard values
             Command.StandardPrefix = "!";
-            Command.StandardDescription = "No desc!";
+            Command.StandardDescription = "No desc.";
 
             // Preparing commands for use 
             Command.RegisterCommands<MainCommands>(); // 1 variant 
@@ -24,8 +24,9 @@ namespace SCS // SCS - Simple Commands System
 
             // Writing "Enter !help to get a list of commands" with colored "!help"
             Text.Write("Enter ", false);
-            Text.Write("!help ", false, nameof(ConsoleColor.Cyan));
-            Text.Write("to get a list of commands\n");
+            Text.Write("!", false, nameof(ConsoleColor.DarkCyan));
+            Text.Write("help ", false, nameof(ConsoleColor.Cyan));
+            Text.Write("to get a list of commands. Don't use commas between arguments and use string arguments in quotes.\n");
 
             while (true)
             {

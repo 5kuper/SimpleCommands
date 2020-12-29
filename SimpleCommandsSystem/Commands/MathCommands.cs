@@ -1,17 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using SCS.System;
-using SCS.Commands;
 using static SCS.System.Text;
 
 namespace SCS.Commands
 {
     class MathCommands
     {
+        public const string Prefix = "m!";
+
         private MathCommands() { }
 
-        [Command("m!", "compute", null)]
+        [Command(Prefix, "help", "List of math commands.", "Help")]
+        public static void HelpCommand()
+        {
+            MainCommands.HelpCommand(Prefix);
+        }
+
+        [Command(Prefix, "compute", null)]
         public static void ComputeCommand(string expression)
         {
             try
@@ -26,14 +32,14 @@ namespace SCS.Commands
             }
         }
 
-        [Command("m!", "random", null), Command("m!", "rnd", null, "Help Ignore")]
+        [Command(Prefix, "random", null), Command("m!", "rnd", null, "Help Ignore")]
         public static void RandomCommand()
         {
             Random random = new Random();
             Text.Write($"Result: {random.Next()}");
         }
 
-        [Command("m!", "random", null), Command("m!", "rnd", null, "Help Ignore")]
+        [Command(Prefix, "random", null), Command("m!", "rnd", null, "Help Ignore")]
         public static void RandomCommand(int minValue, int maxValue)
         {
             try

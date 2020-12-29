@@ -1,16 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using SCS.System;
-using SCS.Commands;
 
 namespace SCS.Commands
 {
     class ConsoleCommands // Change or don't use this class if you are not using System.Console in your program
     {
+        public const string Prefix = "c!";
+
         private ConsoleCommands() { }
 
-        [Command("c!", "beep", null)]
+        [Command(Prefix, "help", "List of console commands.", "Help")]
+        public static void HelpCommand()
+        {
+            MainCommands.HelpCommand(Prefix);
+        }
+
+        [Command(Prefix, "beep", null)]
         public static void BeepCommand(int quantity = 1)
         {
             if (quantity == 1)
@@ -35,7 +41,7 @@ namespace SCS.Commands
             }
         }
 
-        [Command("c!", "change-foreground-color", null)]
+        [Command(Prefix, "change-foreground-color", null)]
         public static void ChangeForegroundColorCommand(string colorName)
         {
             try
@@ -49,7 +55,7 @@ namespace SCS.Commands
             }
         }
 
-        [Command("c!", "change-background-color", null)]
+        [Command(Prefix, "change-background-color", null)]
         public static void ChangeBackgroundColorCommand(string colorName)
         {
             try

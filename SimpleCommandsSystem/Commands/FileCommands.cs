@@ -1,17 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using SCS.System;
-using SCS.Commands;
 using static SCS.System.Text;
 
 namespace SCS.Commands
 {
     class FileCommands
     {
+        public const string Prefix = "f!";
+
         private FileCommands() { }
 
-        [Command("f!", "read", null)]
+        [Command(Prefix, "help", "List of file commands.", "Help")]
+        public static void HelpCommand()
+        {
+            MainCommands.HelpCommand(Prefix);
+        }
+
+        [Command(Prefix, "read", null)]
         public static void ReadCommand(string path)
         {
             try
@@ -43,7 +49,7 @@ namespace SCS.Commands
             }
         }
 
-        [Command("f!", "write", null)]
+        [Command(Prefix, "write", null)]
         public static void WriteCommand(string path, string contents)
         {
             try

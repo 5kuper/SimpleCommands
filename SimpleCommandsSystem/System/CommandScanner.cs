@@ -115,7 +115,7 @@ namespace SCS.System
 
         protected override bool Scan(object valueOfTarget)
         {
-            bool result = false;
+            bool result;
 
             if (ScanCondition == ScannerCondition.Equals || ScanCondition == ScannerCondition.NotEquals)
             {

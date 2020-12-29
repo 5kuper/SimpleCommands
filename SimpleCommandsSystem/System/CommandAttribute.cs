@@ -3,7 +3,7 @@
 namespace SCS.System
 {
     /// <summary>
-    /// Creates a command based on the method. The method must be <see langword="public"/> and <see langword="static"/>.
+    /// Creates a command based on the method. The method must be <see langword="static"/>.
     /// Use <see langword="null"/> in the prefix/description to set the standard value. 
     /// Don't use spaces for the command name.
     /// </summary>
