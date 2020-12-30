@@ -10,6 +10,15 @@ namespace SCS.System
 {
     public class Command
     {
+        /// <summary>Condition for the find method.</summary>
+        public enum FindCondition
+        {
+            /// <summary>Find method returns <see langword="true"/> if all filters are true.</summary>
+            And,
+            /// <summary>Find method returns <see langword="true"/> if one of filters is true.</summary>
+            Or
+        }
+
         private static string _standardPrefix = "/";
         /// <summary>It will be sets for a command if it's prefix is <see langword="null"/> in the command attribute. The default is "/".</summary>
         public static string StandardPrefix 
@@ -136,23 +145,44 @@ namespace SCS.System
         }
 
         /// <summary>
-        /// Finds and returns a list of commands matching the specified filters.
+        /// Finds and returns a list of commands matching the all specified filters, i.e condition is FindCondition.And.
         /// <para>Available filters: SimpleCommandScanner (Equals/NotEquals), StringCommandScanner (Contains/NotContains), ListCommandScanner (Contains/NotContains)</para>
         /// </summary>
-        public static List<Command> Find(params CommandScanner[] filters) 
+        public static List<Command> Find(params CommandScanner[] filters)
+        {
+            return Find(FindCondition.And, filters);
+        }
+
+        /// <summary>
+        /// Finds and returns a list of commands matching the specified filters by the specified condition.
+        /// <para>Available filters: SimpleCommandScanner (Equals/NotEquals), StringCommandScanner (Contains/NotContains), ListCommandScanner (Contains/NotContains)</para>
+        /// <param name="condition">If condition is FindCondition.And, returns is <see langword="true"/> if all filters are true.
+        /// If condition is FindCondition.Or, returns is <see langword="true"/> if one of filters is true</param>
+        /// </summary>
+        public static List<Command> Find(FindCondition condition, params CommandScanner[] filters)
         {
             List<Command> foundCommands = new List<Command>();
             foreach (Command command in Commands)
             {
                 foreach (CommandScanner commandScanner in filters)
                 {
-                    if (commandScanner.Scan(command) == false)
+                    if (condition == FindCondition.And)
                     {
-                        break;
+                        if (commandScanner.Scan(command) == false)
+                        {
+                            break;
+                        }
+                        else if (filters.Last() == commandScanner)
+                        {
+                            foundCommands.Add(command);
+                        }
                     }
-                    else if (filters.Last() == commandScanner)
+                    else
                     {
-                        foundCommands.Add(command);
+                        if (commandScanner.Scan(command) == true && !foundCommands.Contains(command))
+                        {
+                            foundCommands.Add(command);
+                        }
                     }
                 }
             }
@@ -197,6 +227,7 @@ namespace SCS.System
             message = message.Substring(commandPrefix.Length);
 
             words.AddRange(Regex.Split(message, " (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Select(s => s.Replace("\"", "")));
+            words.RemoveAll(i => i == String.Empty);
 
             commandName = words[0];
             words.Remove(commandName);

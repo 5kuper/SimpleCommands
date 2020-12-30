@@ -25,12 +25,12 @@ namespace SCS.Commands
                 // My system of colored text is bad :(
 
                 Text.Write("Command to enter:");
-                Text.Write("prefix", false, nameof(ConsoleColor.DarkCyan));
+                Text.Write("prefix ", false, nameof(ConsoleColor.DarkCyan));
                 Text.Write("name ", false, nameof(ConsoleColor.Cyan));
                 Text.Write("argument1 argument2 argumentN\n", true, nameof(ConsoleColor.Magenta));
 
                 Text.Write("Command in help:");
-                Text.Write("prefix", false, nameof(ConsoleColor.DarkCyan));
+                Text.Write("prefix ", false, nameof(ConsoleColor.DarkCyan));
                 Text.Write("name ", false, nameof(ConsoleColor.Cyan));
                 Text.Write("parameter-type1 ", false, nameof(ConsoleColor.DarkYellow));
                 Text.Write("parameter-name1", false, nameof(ConsoleColor.Yellow));
@@ -52,7 +52,7 @@ namespace SCS.Commands
                 commands = Command.Find(ignoreInHelpFilter, ignoreHelpCommandsFilter, prefixFilter);
             }
 
-            Text.Write("Commands:");
+            Text.Write(commands.Count > 0 ? "Commands:" : "Sorry, commands not found :(");
             foreach (Command command in commands)
             {
                 Text.Write(command.Prefix, false, nameof(ConsoleColor.DarkCyan));
