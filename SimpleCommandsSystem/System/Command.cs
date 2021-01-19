@@ -111,17 +111,7 @@ namespace SCS.System
         public static void RegisterCommands<TClassWithCommands>()
         {
             Type type = typeof(TClassWithCommands);
-            MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
-
-            foreach (MethodInfo method in methods)
-            {
-                var attributes = method.GetCustomAttributes(typeof(CommandAttribute));
-
-                foreach (var attribute in attributes)
-                {
-                    Commands.Add(new Command(method, (CommandAttribute)attribute));
-                }
-            }
+            RegisterCommands(type);
         }
 
         /// <summary>Prepares commands from the class for use.</summary>
@@ -235,11 +225,12 @@ namespace SCS.System
 
             StringScanner prefixScanner = new StringScanner(commandPrefix, StringScanner.TargetOfScanner.Prefix);
             StringScanner nameScanner = new StringScanner(commandName, StringScanner.TargetOfScanner.Name);
-            SimpleScanner containsParametersScanner = new SimpleScanner(true, SimpleScanner.TargetOfScanner.ContainsParameters);
 
             if (arguments.Count > 0)
             {
+                SimpleScanner containsParametersScanner = new SimpleScanner(true, SimpleScanner.TargetOfScanner.ContainsParameters);
                 matchingCommands = Find(prefixScanner, nameScanner, containsParametersScanner);
+                matchingCommands.Reverse();
             }
             else
             {
@@ -256,7 +247,12 @@ namespace SCS.System
             #region Executing the most matching command
             foreach (Command command in matchingCommands)
             {
-                if (command.ContainsParameters)
+                if (!command.ContainsParameters)
+                {
+                    command.Execute();
+                    return;
+                }
+                else
                 {
                     ParameterInfo[] parametersInfo = command.Method.GetParameters();
 
@@ -273,25 +269,35 @@ namespace SCS.System
                             }
                             else
                             {
-                                arguments.Add(parametersInfo[i].DefaultValue);
-                            } 
+                                if (parametersInfo[i].HasDefaultValue)
+                                {
+                                    arguments.Add(parametersInfo[i].DefaultValue);
+                                }
+                                else
+                                {
+                                    throw new ArgumentException();
+                                }
+                            }
+                            
                         }
                     }
-                    catch
+                    catch (Exception e)
                     {
                         if (command == matchingCommands.Last())
                         {
-                            Text.Warn(Text.WarningType.WrongArguments);
+                            if (e is OverflowException)
+                            {
+                                Text.Warn(otherWarningText: "Wrong arguments! One or more arguments are outside of range for the data type!");
+                            }
+                            else
+                            {
+                                Text.Warn(Text.WarningType.WrongArguments);
+                            }
                         }
                         continue;
                     }
 
                     command.Execute(arguments.ToArray());
-                    return;
-                }
-                else
-                {
-                    command.Execute();
                     return;
                 }
             }
