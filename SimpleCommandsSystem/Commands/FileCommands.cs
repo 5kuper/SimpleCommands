@@ -17,7 +17,7 @@ namespace SCS.Commands
             MainCommands.HelpCommand(Prefix);
         }
 
-        [Command(Prefix, "read", null)]
+        [Command(Prefix, "read", "Reads the text in the file.")]
         public static void ReadCommand(string path)
         {
             try
@@ -49,7 +49,7 @@ namespace SCS.Commands
             }
         }
 
-        [Command(Prefix, "write", null)]
+        [Command(Prefix, "write", "Writes the string to the file.")]
         public static void WriteCommand(string path, string contents)
         {
             try

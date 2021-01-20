@@ -278,21 +278,21 @@ namespace SCS.System
                                     throw new ArgumentException();
                                 }
                             }
-                            
                         }
                     }
-                    catch (Exception e)
+                    catch //(Exception e)
                     {
                         if (command == matchingCommands.Last())
                         {
-                            if (e is OverflowException)
+                            /*if (e is OverflowException)
                             {
                                 Text.Warn(otherWarningText: "Wrong arguments! One or more arguments are outside of range for the data type!");
                             }
                             else
                             {
                                 Text.Warn(Text.WarningType.WrongArguments);
-                            }
+                            }*/
+                            Text.Warn(Text.WarningType.WrongArguments);
                         }
                         continue;
                     }
