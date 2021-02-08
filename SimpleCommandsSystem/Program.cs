@@ -23,6 +23,11 @@ namespace SCS // SCS - Simple Commands System
             Command.RegisterCommands(typeof(MathCommands), typeof(FileCommands)); // 2 variant 
 
             // Writing "Enter !help to get a list of commands" with colored "!help"
+
+            AdvancedConsole.ColoredWriteLine(new ColoredString("Enter "), 
+                new ColoredString(ConsoleColor.DarkCyan, "!"), new ColoredString(ConsoleColor.Cyan, "help "),
+                new ColoredString("to get a list of commands. Don't use commas between arguments and use string arguments in quotes."));
+
             Text.Write("Enter ", false);
             Text.Write("!", false, nameof(ConsoleColor.DarkCyan));
             Text.Write("help ", false, nameof(ConsoleColor.Cyan));
