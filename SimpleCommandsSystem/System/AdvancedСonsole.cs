@@ -7,8 +7,26 @@ namespace SCS.System
         /// <summary>Used for the Warn method.</summary>
         public enum WarningType { WrongCommand, WrongArguments }
 
-        public static ConsoleColor ForegroundColor => Console.ForegroundColor;
-        public static ConsoleColor BackgroundColor => Console.BackgroundColor;
+        /// <summary>The default is Console.Title field.</summary>
+        public static string Title
+        {
+            get => Console.Title;
+            set => Console.Title = value;
+        }
+
+        /// <summary>The default is Console.ForegroundColor field.</summary>
+        public static ConsoleColor ForegroundColor
+        {
+            get => Console.ForegroundColor;
+            set => Console.ForegroundColor = value;
+        }
+
+        /// <summary>The default is Console.BackgroundColor field.</summary>
+        public static ConsoleColor BackgroundColor
+        {
+            get => Console.BackgroundColor;
+            set => Console.BackgroundColor = value;
+        }
 
         /// <summary>The default is Console.ReadLine method.</summary>
         public static Func<string> ReadLine => Console.ReadLine;
@@ -29,16 +47,16 @@ namespace SCS.System
         {
             foreach (var coloredString in coloredStrings)
             {
-                ConsoleColor previousForegroundColor = Console.ForegroundColor;
-                ConsoleColor previousBackgroundColor = Console.BackgroundColor;
+                ConsoleColor previousForegroundColor = ForegroundColor;
+                ConsoleColor previousBackgroundColor = BackgroundColor;
 
-                Console.ForegroundColor = coloredString.ForegroundColor;
-                Console.BackgroundColor = coloredString.BackgroundColor;
+                ForegroundColor = coloredString.ForegroundColor;
+                BackgroundColor = coloredString.BackgroundColor;
 
                 Write(coloredString.Value);
 
-                Console.ForegroundColor = previousForegroundColor;
-                Console.BackgroundColor = previousBackgroundColor;
+                ForegroundColor = previousForegroundColor;
+                BackgroundColor = previousBackgroundColor;
             }
         }
 
@@ -78,6 +96,7 @@ namespace SCS.System
             ColoredWriteLine(new ColoredString(foregroundColor, value, backgroundColor));
         }
 
+        /// <summary>Writes line with red color</summary>
         public static void Warn(string text)
         {
             ColoredWriteLine(ConsoleColor.Red, text);

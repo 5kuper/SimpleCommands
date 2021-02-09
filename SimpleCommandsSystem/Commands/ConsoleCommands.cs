@@ -4,10 +4,10 @@ using SCS.System;
 
 namespace SCS.Commands
 {
-    class ConsoleCommands // Change or don't use this class if you are not using System.Console in your program
+    class ConsoleCommands // Edit or don't use this class if you are not using System.Console in your program
     {
         public const string Prefix = "c!";
-        public static readonly string DefaultTitle = Console.Title;
+        public static readonly string DefaultTitle = AdvancedConsole.Title;
 
         private ConsoleCommands() { }
 
@@ -22,38 +22,38 @@ namespace SCS.Commands
         {
             if (quantity == 1)
             {
-                Text.Write("Beep!");
+                AdvancedConsole.WriteLine("Beep!");
                 Console.Beep();
             }
             else if (quantity > 1)
             {
-                Text.Write("B", false);
+                AdvancedConsole.Write("B");
                 for (int i = 0; i < quantity; i++)
                 {
                     Thread.Sleep(100);
-                    Text.Write("ee", false);
+                    AdvancedConsole.Write("ee");
                     Console.Beep();
                 }
-                Text.Write("p!\n", false);
+                AdvancedConsole.Write("p!\n");
             }
             else
             {
-                Text.Write("Not beep!");
+                AdvancedConsole.WriteLine("Not beep!");
             }
         }
 
         [Command(Prefix, "change-title", "Sets the title of the console.")]
         public static void ChangeTitleCommand(string title)
         {
-            Console.Title = title;
-            Text.Write($"The title changed to \"{title}\"");
+            AdvancedConsole.Title = title;
+            AdvancedConsole.WriteLine($"The title changed to \"{title}\"");
         }
 
         [Command(Prefix, "reset-title", "Sets the title of the console to the default value.")]
         public static void ResetTitleCommand()
         {
-            Console.Title = DefaultTitle;
-            Text.Write($"The title is reset to the default value");
+            AdvancedConsole.Title = DefaultTitle;
+            AdvancedConsole.WriteLine($"The title is reset to the default value");
         }
 
         [Command(Prefix, "change-foreground-color", "Sets the foreground color of the console.")]
@@ -61,12 +61,12 @@ namespace SCS.Commands
         {
             try
             {
-                Console.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colorName, true);
-                Text.Write($"Foreground color changed to {Console.ForegroundColor}");
+                AdvancedConsole.ForegroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colorName, true);
+                AdvancedConsole.WriteLine($"Foreground color changed to {AdvancedConsole.ForegroundColor}");
             }
             catch
             {
-                Text.Warn(otherWarningText: "Wrong color name!");
+                AdvancedConsole.Warn("Wrong color name!");
             }
         }
 
@@ -75,12 +75,12 @@ namespace SCS.Commands
         {
             try
             {
-                Console.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colorName, true);
-                Text.Write($"Background color changed to {Console.BackgroundColor}");
+                AdvancedConsole.BackgroundColor = (ConsoleColor)Enum.Parse(typeof(ConsoleColor), colorName, true);
+                AdvancedConsole.WriteLine($"Background color changed to {AdvancedConsole.BackgroundColor}");
             }
             catch
             {
-                Text.Warn(otherWarningText: "Wrong color name!"); 
+                AdvancedConsole.Warn("Wrong color name!"); 
             }
         }
 
@@ -88,14 +88,14 @@ namespace SCS.Commands
         public static void ResetColorCommand()
         {
             Console.ResetColor();
-            Text.Write("Foreground and background console colors are reset to their default values"); 
+            AdvancedConsole.WriteLine("Foreground and background console colors are reset to their default values"); 
         }
 
         [Command(Prefix, "clear", "Clears the console.")]
         public static void ClearCommand()
         {
             Console.Clear();
-            Text.Write("The console cleared");
+            AdvancedConsole.WriteLine("The console cleared");
         }
     }
 }

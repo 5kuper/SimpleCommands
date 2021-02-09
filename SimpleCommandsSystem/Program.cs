@@ -8,10 +8,10 @@ namespace SCS // SCS - Simple Commands System
     {
         private static void Main(string[] args)
         {
-            Console.Title = "Simple Commands System";
+            AdvancedConsole.Title = "Simple Commands System";
 
             // If you are not using System.Console in your program,
-            // change the Text.Read and Text.Write delegates and change or don't use the ConsoleCommands class
+            // Edit the AdvancedConsole class and edit or don't use the ConsoleCommands class
 
             // Setting standard values
             Command.StandardPrefix = "!";
@@ -26,21 +26,16 @@ namespace SCS // SCS - Simple Commands System
 
             AdvancedConsole.ColoredWriteLine(new ColoredString("Enter "), 
                 new ColoredString(ConsoleColor.DarkCyan, "!"), new ColoredString(ConsoleColor.Cyan, "help "),
-                new ColoredString("to get a list of commands. Don't use commas between arguments and use string arguments in quotes."));
-
-            Text.Write("Enter ", false);
-            Text.Write("!", false, nameof(ConsoleColor.DarkCyan));
-            Text.Write("help ", false, nameof(ConsoleColor.Cyan));
-            Text.Write("to get a list of commands. Don't use commas between arguments and use string arguments in quotes.\n");
+                new ColoredString("to get a list of commands. Don't use commas between arguments and use string arguments in quotes.\n"));
 
             while (true)
             {
-                Text.Write("Enter a command:");
-                string message = Text.Read();
+                AdvancedConsole.Write("Enter a command: ");
+                string message = AdvancedConsole.ReadLine();
 
-                Text.Write();
+                AdvancedConsole.WriteLine();
                 Command.Execute(message); // Parses the message to a command and executes it
-                Text.Write();
+                AdvancedConsole.WriteLine();
             }
         }
     }

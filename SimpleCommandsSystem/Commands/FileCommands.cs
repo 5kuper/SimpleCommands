@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using SCS.System;
-using static SCS.System.Text;
 
 namespace SCS.Commands
 {
@@ -22,29 +21,29 @@ namespace SCS.Commands
         {
             try
             {
-                Text.Write(File.ReadAllText(path));
+                AdvancedConsole.WriteLine(File.ReadAllText(path));
             }
             catch (Exception e)
             {
                 if (e is DirectoryNotFoundException)
                 {
-                    Text.Warn(otherWarningText: $"Directory Not Found!");
+                    AdvancedConsole.Warn("Directory Not Found!");
                 }
                 else if (e is FileNotFoundException)
                 {
-                    Text.Warn(otherWarningText: $"File Not Found!");
+                    AdvancedConsole.Warn("File Not Found!");
                 }
                 else if (e is PathTooLongException)
                 {
-                    Text.Warn(otherWarningText: $"Path Too Long!");
+                    AdvancedConsole.Warn("Path Too Long!");
                 }
                 else if (e is UnauthorizedAccessException)
                 {
-                    Text.Warn(otherWarningText: $"Unauthorized Access!");
+                    AdvancedConsole.Warn("Unauthorized Access!");
                 }
                 else
                 {
-                    Text.Warn(WarningType.WrongArguments);
+                    AdvancedConsole.Warn(AdvancedConsole.WarningType.WrongArguments);
                 }
             }
         }
@@ -60,23 +59,23 @@ namespace SCS.Commands
             {
                 if (e is DirectoryNotFoundException)
                 {
-                    Text.Warn(otherWarningText: $"Directory Not Found!");
+                    AdvancedConsole.Warn("Directory Not Found!");
                 }
                 else if (e is PathTooLongException)
                 {
-                    Text.Warn(otherWarningText: $"Path Too Long!");
+                    AdvancedConsole.Warn("Path Too Long!");
                 }
                 else if (e is UnauthorizedAccessException)
                 {
-                    Text.Warn(otherWarningText: $"Unauthorized Access!");
+                    AdvancedConsole.Warn("Unauthorized Access!");
                 }
                 else
                 {
-                    Text.Warn(WarningType.WrongArguments);
+                    AdvancedConsole.Warn(AdvancedConsole.WarningType.WrongArguments);
                 }
                 return;
             }
-            Text.Write($"Text successfully written!");
+            AdvancedConsole.WriteLine($"Text successfully written!");
         }
     }
 }

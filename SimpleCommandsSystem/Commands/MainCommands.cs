@@ -4,6 +4,7 @@ using SCS.System;
 using System.Collections.Generic;
 using System.Linq;
 using ListScanner = SCS.System.ListCommandScanner;
+using CStr = SCS.System.ColoredString;
 
 namespace SCS.Commands
 {
@@ -22,24 +23,14 @@ namespace SCS.Commands
             if (prefix == null)
             {
                 #region Colored text
-                // My system of colored text is bad :(
+                AdvancedConsole.ColoredWriteLine(new CStr("Command to enter:\n"), new CStr(ConsoleColor.DarkCyan, "prefix "),
+                    new CStr(ConsoleColor.Cyan, "name "), new CStr(ConsoleColor.Magenta, "argument1 argument2 argumentN\n"));
 
-                Text.Write("Command to enter:");
-                Text.Write("prefix ", false, nameof(ConsoleColor.DarkCyan));
-                Text.Write("name ", false, nameof(ConsoleColor.Cyan));
-                Text.Write("argument1 argument2 argumentN\n", true, nameof(ConsoleColor.Magenta));
-
-                Text.Write("Command in help:");
-                Text.Write("prefix ", false, nameof(ConsoleColor.DarkCyan));
-                Text.Write("name ", false, nameof(ConsoleColor.Cyan));
-                Text.Write("parameter-type1 ", false, nameof(ConsoleColor.DarkYellow));
-                Text.Write("parameter-name1", false, nameof(ConsoleColor.Yellow));
-                Text.Write(", ", false);
-                Text.Write("parameter-type2 ", false, nameof(ConsoleColor.DarkYellow));
-                Text.Write("parameter-name2 ", false, nameof(ConsoleColor.Yellow));
-                Text.Write("= ", false);
-                Text.Write("default-value ", false, nameof(ConsoleColor.Magenta));
-                Text.Write("| Description.\n", true, nameof(ConsoleColor.DarkGray));
+                AdvancedConsole.ColoredWriteLine(new CStr("Command in help:\n"), 
+                    new CStr(ConsoleColor.DarkCyan, "prefix "), new CStr(ConsoleColor.Cyan, "name "), 
+                    new CStr(ConsoleColor.DarkYellow, "parameter-type1 "), new CStr(ConsoleColor.Yellow, "parameter-name1"), new CStr(", "),
+                    new CStr(ConsoleColor.DarkYellow, "parameter-type2 "), new CStr(ConsoleColor.Yellow, "parameter-name2 "),
+                    new ColoredString("= "), new CStr(ConsoleColor.Magenta, "default-value "), new CStr(ConsoleColor.DarkGray, "| Description.\n"));
                 #endregion
 
                 commands = Command.Find(ignoreInHelpFilter, new ListScanner("Help"));
@@ -52,29 +43,29 @@ namespace SCS.Commands
                 commands = Command.Find(ignoreInHelpFilter, ignoreHelpCommandsFilter, prefixFilter);
             }
 
-            Text.Write(commands.Count > 0 ? "Commands:" : "Sorry, commands not found :(");
+            AdvancedConsole.WriteLine(commands.Count > 0 ? "Commands:" : "Sorry, commands not found :(");
             foreach (Command command in commands)
             {
-                Text.Write(command.Prefix, false, nameof(ConsoleColor.DarkCyan));
-                Text.Write(command.Name, false, nameof(ConsoleColor.Cyan));
+                AdvancedConsole.ColoredWrite(ConsoleColor.DarkCyan, command.Prefix);
+                AdvancedConsole.ColoredWrite(ConsoleColor.Cyan, command.Name);
 
                 foreach (ParameterInfo parameter in command.Parameters)
                 {
-                    Text.Write(" " + parameter.ParameterType.Name + " ", false, nameof(ConsoleColor.DarkYellow));
-                    Text.Write(parameter.Name, false, nameof(ConsoleColor.Yellow));
+                    AdvancedConsole.ColoredWrite(ConsoleColor.DarkYellow, " " + parameter.ParameterType.Name + " ");
+                    AdvancedConsole.ColoredWrite(ConsoleColor.Yellow, parameter.Name);
 
                     if (parameter.HasDefaultValue)
                     {
-                        Text.Write(" = ", false);
-                        Text.Write($"{parameter.DefaultValue ?? "null"}", false, nameof(ConsoleColor.Magenta));
+                        AdvancedConsole.Write(" = ");
+                        AdvancedConsole.ColoredWrite(ConsoleColor.Magenta, $"{parameter.DefaultValue ?? "null"}");
                     }
                     if (parameter != command.Parameters.Last())
                     {
-                        Text.Write(",", false);
+                        AdvancedConsole.Write(",");
                     }
                 }
 
-                Text.Write($" | {command.Description}", true, nameof(ConsoleColor.DarkGray));
+                AdvancedConsole.ColoredWriteLine(ConsoleColor.DarkGray, $" | {command.Description}");
             }
         }
     }

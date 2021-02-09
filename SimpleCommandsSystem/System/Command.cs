@@ -219,6 +219,12 @@ namespace SCS.System
             words.AddRange(Regex.Split(message, " (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Select(s => s.Replace("\"", "")));
             words.RemoveAll(i => i == String.Empty);
 
+            if (words.Count == 0)
+            {
+                AdvancedConsole.Warn(AdvancedConsole.WarningType.WrongCommand);
+                return;
+            }
+
             commandName = words[0];
             words.Remove(commandName);
             arguments.AddRange(words.Select(s => s));
@@ -239,7 +245,7 @@ namespace SCS.System
 
             if (matchingCommands.Count == 0)
             {
-                Text.Warn(Text.WarningType.WrongCommand);
+                AdvancedConsole.Warn(AdvancedConsole.WarningType.WrongCommand);
                 return;
             }
             #endregion
@@ -280,19 +286,11 @@ namespace SCS.System
                             }
                         }
                     }
-                    catch //(Exception e)
+                    catch
                     {
                         if (command == matchingCommands.Last())
                         {
-                            /*if (e is OverflowException)
-                            {
-                                Text.Warn(otherWarningText: "Wrong arguments! One or more arguments are outside of range for the data type!");
-                            }
-                            else
-                            {
-                                Text.Warn(Text.WarningType.WrongArguments);
-                            }*/
-                            Text.Warn(Text.WarningType.WrongArguments);
+                            AdvancedConsole.Warn(AdvancedConsole.WarningType.WrongArguments);
                         }
                         continue;
                     }
@@ -313,7 +311,7 @@ namespace SCS.System
             }
             catch
             {
-                Text.Warn(Text.WarningType.WrongArguments);
+                AdvancedConsole.Warn(AdvancedConsole.WarningType.WrongArguments);
             }
         }
     }
