@@ -4,7 +4,7 @@ using SCS.System;
 
 namespace SCS.Commands
 {
-    class ConsoleCommands // Edit or don't use this class if you are not using System.Console in your program
+    internal class ConsoleCommands // Edit or don't use this class if you are not using System.Console in your program
     {
         public const string Prefix = "c!";
         public static readonly string DefaultTitle = AdvancedConsole.Title;
@@ -12,12 +12,9 @@ namespace SCS.Commands
         private ConsoleCommands() { }
 
         [Command(Prefix, "help", "List of console commands.", "Help")]
-        public static void HelpCommand()
-        {
-            MainCommands.HelpCommand(Prefix);
-        }
+        public static void HelpCommand() => MainCommands.HelpCommand(Prefix);
 
-        [Command(Prefix, "beep", "Makes a beep")]
+        [Command(Prefix, "beep", "Makes a beep.")]
         public static void BeepCommand(int quantity = 1)
         {
             if (quantity == 1)
@@ -53,7 +50,7 @@ namespace SCS.Commands
         public static void ResetTitleCommand()
         {
             AdvancedConsole.Title = DefaultTitle;
-            AdvancedConsole.WriteLine($"The title is reset to the default value");
+            AdvancedConsole.WriteLine("The title is reset to the default value");
         }
 
         [Command(Prefix, "change-foreground-color", "Sets the foreground color of the console.")]

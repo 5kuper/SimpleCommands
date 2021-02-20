@@ -4,17 +4,14 @@ using SCS.System;
 
 namespace SCS.Commands
 {
-    class FileCommands
+    internal class FileCommands
     {
         public const string Prefix = "f!";
 
         private FileCommands() { }
 
         [Command(Prefix, "help", "List of file commands.", "Help")]
-        public static void HelpCommand()
-        {
-            MainCommands.HelpCommand(Prefix);
-        }
+        public static void HelpCommand() => MainCommands.HelpCommand(Prefix);
 
         [Command(Prefix, "read", "Reads the text in the file.")]
         public static void ReadCommand(string path)
@@ -75,7 +72,7 @@ namespace SCS.Commands
                 }
                 return;
             }
-            AdvancedConsole.WriteLine($"Text successfully written!");
+            AdvancedConsole.WriteLine("Text successfully written!");
         }
     }
 }

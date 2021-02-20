@@ -4,9 +4,9 @@ using SCS.Commands;
 
 namespace SCS // SCS - Simple Commands System
 {
-    class Program
+    internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
             AdvancedConsole.Title = "Simple Commands System";
 
@@ -23,7 +23,6 @@ namespace SCS // SCS - Simple Commands System
             Command.RegisterCommands(typeof(MathCommands), typeof(FileCommands)); // 2 variant 
 
             // Writing "Enter !help to get a list of commands" with colored "!help"
-
             AdvancedConsole.ColoredWriteLine(new ColoredString("Enter "), 
                 new ColoredString(ConsoleColor.DarkCyan, "!"), new ColoredString(ConsoleColor.Cyan, "help "),
                 new ColoredString("to get a list of commands. Don't use commas between arguments and use string arguments in quotes.\n"));

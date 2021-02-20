@@ -9,7 +9,7 @@ namespace SCS.System
         public enum TargetOfScanner { Prefix, Name, Description, Tags, Method, Class, MethodName, ClassName, ContainsParameters }
 
         /// <summary>The element of a command that will be scanned.</summary>
-        public TargetOfScanner TargetOfScan { get; private set; }
+        public TargetOfScanner TargetOfScan { get; }
 
         protected CommandScanner(TargetOfScanner targetOfScan)
         {
@@ -19,40 +19,19 @@ namespace SCS.System
         /// <summary>Scans the command using the TargetOfScan, ScanValue and ScanCondition specified in the constructor and returns result.</summary>
         public bool Scan(Command command)
         {
-            bool result = false;
-
-            switch (TargetOfScan)
+            return TargetOfScan switch
             {
-                case TargetOfScanner.Prefix:
-                    result = Scan(command.Prefix);
-                    break;
-                case TargetOfScanner.Name:
-                    result = Scan(command.Name);
-                    break;
-                case TargetOfScanner.Description:
-                    result = Scan(command.Description);
-                    break;
-                case TargetOfScanner.Tags:
-                    result = Scan(command.Tags);
-                    break;
-                case TargetOfScanner.Method:
-                    result = Scan(command.Method);
-                    break;
-                case TargetOfScanner.Class:
-                    result = Scan(command.Class);
-                    break;
-                case TargetOfScanner.MethodName:
-                    result = Scan(command.Method.Name);
-                    break;
-                case TargetOfScanner.ClassName:
-                    result = Scan(command.Class.Name);
-                    break;
-                case TargetOfScanner.ContainsParameters:
-                    result = Scan(command.ContainsParameters);
-                    break;
-            }
-
-            return result;
+                TargetOfScanner.Prefix => Scan(command.Prefix),
+                TargetOfScanner.Name => Scan(command.Name),
+                TargetOfScanner.Description => Scan(command.Description),
+                TargetOfScanner.Tags => Scan(command.Tags),
+                TargetOfScanner.Method => Scan(command.Method),
+                TargetOfScanner.Class => Scan(command.Class),
+                TargetOfScanner.MethodName => Scan(command.Method.Name),
+                TargetOfScanner.ClassName => Scan(command.Class.Name),
+                TargetOfScanner.ContainsParameters => Scan(command.ContainsParameters),
+                _ => false
+            };
         }
 
         protected abstract bool Scan(object valueOfTarget);
@@ -61,16 +40,16 @@ namespace SCS.System
     public class SimpleCommandScanner : CommandScanner // or ObjectCommandScanner
     {
         /// <summary>The enum of command elements that can be scanned by this scanner.</summary>
-        new public enum TargetOfScanner { Prefix, Name, Description, Tags, Method, Class, MethodName, ClassName, ContainsParameters }
+        public new enum TargetOfScanner { Prefix, Name, Description, Tags, Method, Class, MethodName, ClassName, ContainsParameters }
 
         /// <summary>The enum of scanning conditions supported by this scanner.</summary>
         public enum ScannerCondition { Equals, NotEquals }
 
         /// <summary>The value that will be used for scan the TargetOfScan.</summary>
-        public object ScanValue { get; private set; }
+        public object ScanValue { get; }
 
         /// <summary>The condition that will be used for scan the TargetOfScan.</summary>
-        public ScannerCondition ScanCondition { get; private set; }
+        public ScannerCondition ScanCondition { get; }
 
         public SimpleCommandScanner(object scanValue, TargetOfScanner scanTarget, ScannerCondition scanCondition = ScannerCondition.Equals)
             : base((CommandScanner.TargetOfScanner)Enum.Parse(typeof(CommandScanner.TargetOfScanner), scanTarget.ToString()))
@@ -83,27 +62,23 @@ namespace SCS.System
         protected override bool Scan(object valueOfTarget)
         {
             bool result = Object.Equals(valueOfTarget, ScanValue);
-            if (ScanCondition == ScannerCondition.NotEquals)
-            {
-                result = !result;
-            }
-            return result;
+            return ScanCondition != ScannerCondition.NotEquals ? result : !result;
         }
     }
 
     public class StringCommandScanner : CommandScanner
     {
         /// <summary>The enum of command elements that can be scanned by this scanner.</summary>
-        new public enum TargetOfScanner { Prefix, Name, Description, MethodName, ClassName }
+        public new enum TargetOfScanner { Prefix, Name, Description, MethodName, ClassName }
 
         /// <summary>The enum of scanning conditions supported by this scanner.</summary>
         public enum ScannerCondition { Equals, NotEquals, Contains, NotContains }
 
         /// <summary>The value that will be used for scan the TargetOfScan.</summary>
-        public string ScanValue { get; private set; }
+        public string ScanValue { get; }
 
         /// <summary>The condition that will be used for scan the TargetOfScan.</summary>
-        public ScannerCondition ScanCondition { get; private set; }
+        public ScannerCondition ScanCondition { get; }
 
         public StringCommandScanner(string scanValue, TargetOfScanner scanTarget, ScannerCondition scanCondition = ScannerCondition.Equals)
             : base((CommandScanner.TargetOfScanner)Enum.Parse(typeof(CommandScanner.TargetOfScanner), scanTarget.ToString()))
@@ -138,16 +113,16 @@ namespace SCS.System
     public class ListCommandScanner : CommandScanner
     {
         /// <summary>The enum of command elements that can be scanned by this scanner.</summary>
-        new public enum TargetOfScanner { Tags }
+        public new enum TargetOfScanner { Tags }
 
         /// <summary>The enum of scanning conditions supported by this scanner.</summary>
         public enum ScannerCondition { Contains, NotContains }
 
         /// <summary>The value that will be used for scan the TargetOfScan.</summary>
-        public object ScanValue { get; private set; }
+        public object ScanValue { get; }
 
         /// <summary>The condition that will be used for scan the TargetOfScan.</summary>
-        public ScannerCondition ScanCondition { get; private set; }
+        public ScannerCondition ScanCondition { get; }
 
         public ListCommandScanner(object scanValue, TargetOfScanner scanTarget = TargetOfScanner.Tags, ScannerCondition scanCondition = ScannerCondition.Contains)
             : base((CommandScanner.TargetOfScanner)Enum.Parse(typeof(CommandScanner.TargetOfScanner), scanTarget.ToString()))
@@ -163,22 +138,12 @@ namespace SCS.System
 
             if (TargetOfScan == CommandScanner.TargetOfScanner.Tags)
             {
-                List<string> typedList = (List<string>)valueOfTarget;
-
-                for (int i = 0; i < typedList.Count; i++)
-                {
-                    objectList.Add(typedList[i]);
-                }
+                objectList.AddRange((List<string>)valueOfTarget);
             }
 
             bool result = objectList.Contains(ScanValue);
 
-            if (ScanCondition == ScannerCondition.NotContains)
-            {
-                result = !result;
-            }
-
-            return result;
+            return ScanCondition != ScannerCondition.NotContains ? result : !result;
         }
     }
 }

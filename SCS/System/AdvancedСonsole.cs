@@ -60,6 +60,11 @@ namespace SCS.System
             }
         }
 
+        public static void ColoredWrite(ConsoleColor foregroundColor, string value, ConsoleColor backgroundColor)
+        {
+            ColoredWrite(new ColoredString(foregroundColor, value, backgroundColor));
+        }
+
         public static void ColoredWrite(ConsoleColor foregroundColor, string value)
         {
             ColoredWrite(new ColoredString(foregroundColor, value));
@@ -70,15 +75,15 @@ namespace SCS.System
             ColoredWrite(new ColoredString(value, backgroundColor));
         }
 
-        public static void ColoredWrite(ConsoleColor foregroundColor, string value, ConsoleColor backgroundColor)
-        {
-            ColoredWrite(new ColoredString(foregroundColor, value, backgroundColor));
-        }
-
         public static void ColoredWriteLine(params ColoredString[] coloredStrings)
         {
             ColoredWrite(coloredStrings);
             WriteLine();
+        }
+
+        public static void ColoredWriteLine(ConsoleColor foregroundColor, string value, ConsoleColor backgroundColor)
+        {
+            ColoredWriteLine(new ColoredString(foregroundColor, value, backgroundColor));
         }
 
         public static void ColoredWriteLine(ConsoleColor foregroundColor, string value)
@@ -91,16 +96,8 @@ namespace SCS.System
             ColoredWriteLine(new ColoredString(value, backgroundColor));
         }
 
-        public static void ColoredWriteLine(ConsoleColor foregroundColor, string value, ConsoleColor backgroundColor)
-        {
-            ColoredWriteLine(new ColoredString(foregroundColor, value, backgroundColor));
-        }
-
         /// <summary>Writes line with red color</summary>
-        public static void Warn(string text)
-        {
-            ColoredWriteLine(ConsoleColor.Red, text);
-        }
+        public static void Warn(string text) => ColoredWriteLine(ConsoleColor.Red, text);
 
         public static void Warn(WarningType type)
         {

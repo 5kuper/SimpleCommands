@@ -8,7 +8,7 @@ using CStr = SCS.System.ColoredString;
 
 namespace SCS.Commands
 {
-    class MainCommands
+    internal class MainCommands
     {
         public const string Prefix = null;
 

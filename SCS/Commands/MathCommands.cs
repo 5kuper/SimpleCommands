@@ -4,17 +4,14 @@ using SCS.System;
 
 namespace SCS.Commands
 {
-    class MathCommands
+    internal class MathCommands
     {
         public const string Prefix = "m!";
 
         private MathCommands() { }
 
         [Command(Prefix, "help", "List of math commands.", "Help")]
-        public static void HelpCommand()
-        {
-            MainCommands.HelpCommand(Prefix);
-        }
+        public static void HelpCommand() => MainCommands.HelpCommand(Prefix);
 
         [Command(Prefix, "compute", "Computes the given expression.")]
         public static void ComputeCommand(string expression)
@@ -67,45 +64,24 @@ namespace SCS.Commands
         }
 
         [Command(Prefix, "pow", "Returns a specified number raised to the specified power.")]
-        public static void PowCommand(double a, double b)
-        {
-            AdvancedConsole.WriteLine($"Result: {Math.Pow(a, b)}");
-        }
+        public static void PowCommand(double a, double b) => AdvancedConsole.WriteLine($"Result: {Math.Pow(a, b)}");
 
         [Command(Prefix, "sqrt", "Returns the square root of a specified number.")]
-        public static void SqrtCommand(double a)
-        {
-            AdvancedConsole.WriteLine($"Result: {Math.Sqrt(a)}");
-        }
+        public static void SqrtCommand(double a) => AdvancedConsole.WriteLine($"Result: {Math.Sqrt(a)}");
 
         [Command(Prefix, "sin", "Returns the sine of the specified angle.")]
-        public static void SinCommand(double a)
-        {
-            AdvancedConsole.WriteLine($"Result: {Math.Sin(a)}");
-        }
+        public static void SinCommand(double a) => AdvancedConsole.WriteLine($"Result: {Math.Sin(a)}");
 
         [Command(Prefix, "cos", "Returns the cosine of the specified angle.")]
-        public static void CosCommand(double a)
-        {
-            AdvancedConsole.WriteLine($"Result: {Math.Cos(a)}");
-        }
+        public static void CosCommand(double a) => AdvancedConsole.WriteLine($"Result: {Math.Cos(a)}");
 
         [Command(Prefix, "tan", "Returns the tangent of the specified angle.")]
-        public static void TanCommand(double a)
-        {
-            AdvancedConsole.WriteLine($"Result: {Math.Tan(a)}");
-        }
+        public static void TanCommand(double a) => AdvancedConsole.WriteLine($"Result: {Math.Tan(a)}");
 
         [Command(Prefix, "round", "Rounds a value to the nearest integral value.")]
-        public static void RoundCommand(decimal a)
-        {
-            AdvancedConsole.WriteLine($"Result: {Math.Round(a)}");
-        }
+        public static void RoundCommand(decimal a) => AdvancedConsole.WriteLine($"Result: {Math.Round(a)}");
 
         [Command(Prefix, "round", "Rounds a decimal value to a specified number of fractional digits.")]
-        public static void RoundCommand(decimal a, int b)
-        {
-            AdvancedConsole.WriteLine($"Result: {Math.Round(a, b)}");
-        }
+        public static void RoundCommand(decimal a, int b) => AdvancedConsole.WriteLine($"Result: {Math.Round(a, b)}");
     }
 }
