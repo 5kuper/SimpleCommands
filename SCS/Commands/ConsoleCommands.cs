@@ -1,5 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Threading;
+using System.Runtime.InteropServices;
+using System.Xml.Serialization;
+using SCS.ConsoleMusic;
 using SCS.System;
 
 namespace SCS.Commands
@@ -7,9 +11,26 @@ namespace SCS.Commands
     internal class ConsoleCommands // Edit or don't use this class if you are not using System.Console in your program
     {
         public const string Prefix = "c!";
-        public static readonly string DefaultTitle = AdvancedConsole.Title;
+        public static readonly string DefaultTitle;
+
+        private static readonly XmlSerializer TuneSerializer = new XmlSerializer(typeof(Tune));
+        private static Tune _hackingToTheGateTune;
+
+        static ConsoleCommands() => DefaultTitle = new string(AdvancedConsole.Title);
 
         private ConsoleCommands() { }
+
+
+        [DllImport("kernel32.dll", ExactSpelling = true)]
+        private static extern IntPtr GetConsoleWindow();
+
+        private static readonly IntPtr ThisConsole = GetConsoleWindow();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        private enum ShowWindowType { Hide = 0, Maximize = 3, Minimize = 6, Restore = 9 }
+
 
         [Command(Prefix, "help", "List of console commands.", "Help")]
         public static void HelpCommand() => MainCommands.HelpCommand(Prefix);
@@ -36,6 +57,49 @@ namespace SCS.Commands
             else
             {
                 AdvancedConsole.WriteLine("Not beep!");
+            }
+        }
+
+        [Command(Prefix, "beep-music", "Plays a beep music.")]
+        public static void BeepMusicCommand(string pathToXml)
+        {
+            try
+            {
+                Tune tune;
+
+                using (FileStream stream = new FileStream(pathToXml, FileMode.Open))
+                {
+                    tune = (Tune)TuneSerializer.Deserialize(stream);
+                }
+
+                tune.Play();
+            }
+            catch (Exception e)
+            {
+                if (e is InvalidOperationException)
+                {
+                    AdvancedConsole.Warn("Invalid File!");
+                }
+                else if (e is DirectoryNotFoundException)
+                {
+                    AdvancedConsole.Warn("Directory Not Found!");
+                }
+                else if (e is FileNotFoundException)
+                {
+                    AdvancedConsole.Warn("File Not Found!");
+                }
+                else if (e is PathTooLongException)
+                {
+                    AdvancedConsole.Warn("Path Too Long!");
+                }
+                else if (e is UnauthorizedAccessException)
+                {
+                    AdvancedConsole.Warn("Unauthorized Access!");
+                }
+                else
+                {
+                    AdvancedConsole.Warn(AdvancedConsole.WarningType.WrongArguments);
+                }
             }
         }
 
@@ -93,6 +157,44 @@ namespace SCS.Commands
         {
             Console.Clear();
             AdvancedConsole.WriteLine("The console cleared");
+        }
+
+        [Command(Prefix, "steins-gate", "???")]
+        public static void SteinsGateCommand()
+        {
+            ShowWindow(ThisConsole, (int)ShowWindowType.Maximize);
+
+            string musicPath, artPath;
+
+            #if DEBUG
+                artPath = @"..\..\..\AsciiArts\SteinsGate.txt";
+                musicPath = @"..\..\..\ConsoleMusic\HackingToTheGate.xml";
+            #else
+                artPath = @"AsciiArts\SteinsGate.xml";
+                musicPath = @"ConsoleMusic\HackingToTheGate.xml";
+            #endif
+
+            Tune tune;
+
+            if (_hackingToTheGateTune == null)
+            {
+                using FileStream stream = new FileStream(musicPath, FileMode.Open);
+                _hackingToTheGateTune = (Tune)TuneSerializer.Deserialize(stream);
+            }
+            tune = _hackingToTheGateTune;
+
+            using (StreamReader reader = new StreamReader(artPath))
+            {
+                tune.Play(() =>
+                {
+                    if (reader.Peek() > -1)
+                    {
+                        Console.WriteLine(reader.ReadLine());
+                    }
+                });
+            }
+
+            ShowWindow(ThisConsole, (int)ShowWindowType.Restore);
         }
     }
 }
