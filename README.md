@@ -18,8 +18,8 @@ namespace SCS.Commands
 
 		private SampleCommands() { }
 
-		Don't use spaces for the command name.
-		Use null in the prefix/description to set the standard value. 
+		// Don't use spaces for the command name.
+		// Use null in the prefix/description to set the standard value. 
 		[Command(Prefix, "sample-command-name", "Sample command description.")]
 		public static void SampleCommand(string text) // The method must be static!
 		{
