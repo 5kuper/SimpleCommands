@@ -3,12 +3,12 @@ using System.IO;
 using System.Threading;
 using System.Runtime.InteropServices;
 using System.Xml.Serialization;
-using SCS.ConsoleMusic;
+using ConsoleMusic;
 using SCS.System;
 
 namespace SCS.Commands
 {
-    internal class ConsoleCommands // Edit or don't use this class if you are not using System.Console in your program
+    public class ConsoleCommands // Edit or don't use this class if you are not using System.Console in your program
     {
         public const string Prefix = "c!";
         public static readonly string DefaultTitle;

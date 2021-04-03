@@ -4,7 +4,7 @@ using SCS.System;
 
 namespace SCS.Commands
 {
-    internal class FileCommands
+    public class FileCommands
     {
         public const string Prefix = "f!";
 

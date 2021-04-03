@@ -3,7 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30406.217
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SCS", "SCS\SCS.csproj", "{012A3F06-5F8F-477B-BB55-37861BBF1D36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleConsoleApp", "SampleConsoleApp\SampleConsoleApp.csproj", "{012A3F06-5F8F-477B-BB55-37861BBF1D36}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScsSystem", "ScsSystem\ScsSystem.csproj", "{5DB6F1E2-1A83-4E9D-A705-7B8E01415BD0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleMusic", "ConsoleMusic\ConsoleMusic.csproj", "{9AC06EBF-10EE-46B0-8866-38999CC07B4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScsMainCommands", "SampleCommands\ScsMainCommands\ScsMainCommands.csproj", "{446F83B4-A094-4471-98F3-2118EE98A39C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScsMathCommands", "SampleCommands\ScsMathCommands\ScsMathCommands.csproj", "{B2ED7B0C-C357-4F54-9203-CF3E9EAA4DBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScsFileCommands", "SampleCommands\ScsFileCommands\ScsFileCommands.csproj", "{9846F765-82C9-4938-AAE5-0D30B0955861}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScsConsoleCommands", "SampleCommands\ScsConsoleCommands\ScsConsoleCommands.csproj", "{C6E18D8D-40B5-4B20-9A9F-BACAEE86F988}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +27,30 @@ Global
 		{012A3F06-5F8F-477B-BB55-37861BBF1D36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{012A3F06-5F8F-477B-BB55-37861BBF1D36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{012A3F06-5F8F-477B-BB55-37861BBF1D36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DB6F1E2-1A83-4E9D-A705-7B8E01415BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DB6F1E2-1A83-4E9D-A705-7B8E01415BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DB6F1E2-1A83-4E9D-A705-7B8E01415BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DB6F1E2-1A83-4E9D-A705-7B8E01415BD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AC06EBF-10EE-46B0-8866-38999CC07B4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AC06EBF-10EE-46B0-8866-38999CC07B4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AC06EBF-10EE-46B0-8866-38999CC07B4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AC06EBF-10EE-46B0-8866-38999CC07B4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{446F83B4-A094-4471-98F3-2118EE98A39C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{446F83B4-A094-4471-98F3-2118EE98A39C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{446F83B4-A094-4471-98F3-2118EE98A39C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{446F83B4-A094-4471-98F3-2118EE98A39C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2ED7B0C-C357-4F54-9203-CF3E9EAA4DBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2ED7B0C-C357-4F54-9203-CF3E9EAA4DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2ED7B0C-C357-4F54-9203-CF3E9EAA4DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2ED7B0C-C357-4F54-9203-CF3E9EAA4DBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9846F765-82C9-4938-AAE5-0D30B0955861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9846F765-82C9-4938-AAE5-0D30B0955861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9846F765-82C9-4938-AAE5-0D30B0955861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9846F765-82C9-4938-AAE5-0D30B0955861}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6E18D8D-40B5-4B20-9A9F-BACAEE86F988}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6E18D8D-40B5-4B20-9A9F-BACAEE86F988}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6E18D8D-40B5-4B20-9A9F-BACAEE86F988}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6E18D8D-40B5-4B20-9A9F-BACAEE86F988}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

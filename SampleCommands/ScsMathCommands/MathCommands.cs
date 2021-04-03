@@ -4,7 +4,7 @@ using SCS.System;
 
 namespace SCS.Commands
 {
-    internal class MathCommands
+    public class MathCommands
     {
         public const string Prefix = "m!";
 

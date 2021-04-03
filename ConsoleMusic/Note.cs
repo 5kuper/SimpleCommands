@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SCS.ConsoleMusic
+namespace ConsoleMusic
 {
     /// <summary>Frequencies of notes of different octaves, as well as silence (rest).</summary>
     public enum Tone 

@@ -2,7 +2,7 @@
 using SCS.System;
 using SCS.Commands;
 
-namespace SCS // SCS - Simple Commands System
+namespace SCS.Console // SCS - Simple Commands System
 {
     internal class Program
     {

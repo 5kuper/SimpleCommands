@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Xml.Serialization;
 
-namespace SCS.ConsoleMusic
+namespace ConsoleMusic
 {
     [Serializable] 
     public class Tune
