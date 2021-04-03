@@ -1,8 +1,10 @@
-## Folders
-- **System** - Main code
-- **Commands** - Sample commands
-- **ConsoleMusic** - Music using Console.Beep()
-- **AsciiArts** - Ascii art for one sample command 
+## Navigation
+- **SCS.System** - Core library
+- **SampleCommands** - Libraries with sample commands
+- **SampleConsoleApp** - Sample preparing commands for use
+  - **AsciiArts** - Ascii art for a command from ConsoleCommands
+  - **ConsoleMusic** - XML with music for a command from ConsoleCommands
+- **ConsoleMusic** - Library for play a music using Console.Beep()
 
 
 ## Create commands
@@ -12,7 +14,7 @@ using SCS.System;
 
 namespace SCS.Commands
 {
-	internal class SampleCommands
+	public class SampleCommands
 	{
 		public const string Prefix = "s!";
 
@@ -35,7 +37,7 @@ You can add multiple attributes to a method so that the command can be invoked w
 
 
 ## Prepare commands for use 
-[Program.cs](SCS/Program.cs)
+[Program.cs](SampleConsoleApp/Program.cs)
 
 
 ## Use commands
