@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScsMainCommands\ScsMainCommands.csproj" />
+    <ProjectReference Include="..\..\SCS.System\SCS.System.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SampleCommands\ScsConsoleCommands\ScsConsoleCommands.csproj" />
-    <ProjectReference Include="..\SampleCommands\ScsFileCommands\ScsFileCommands.csproj" />
-    <ProjectReference Include="..\SampleCommands\ScsMainCommands\ScsMainCommands.csproj" />
-    <ProjectReference Include="..\SampleCommands\ScsMathCommands\ScsMathCommands.csproj" />
-    <ProjectReference Include="..\ScsSystem\ScsSystem.csproj" />
+    <ProjectReference Include="..\SampleCommands\SCS.ConsoleCommands\SCS.ConsoleCommands.csproj" />
+    <ProjectReference Include="..\SampleCommands\SCS.FileCommands\SCS.FileCommands.csproj" />
+    <ProjectReference Include="..\SampleCommands\SCS.MainCommands\SCS.MainCommands.csproj" />
+    <ProjectReference Include="..\SampleCommands\SCS.MathCommands\SCS.MathCommands.csproj" />
+    <ProjectReference Include="..\SCS.System\SCS.System.csproj" />
   </ItemGroup>
 
 </Project>

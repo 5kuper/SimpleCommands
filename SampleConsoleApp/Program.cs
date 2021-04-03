@@ -2,7 +2,7 @@
 using SCS.System;
 using SCS.Commands;
 
-namespace SCS.Console // SCS - Simple Commands System
+namespace SampleConsoleApp // SCS - Simple Commands System
 {
     internal class Program
     {
@@ -10,13 +10,16 @@ namespace SCS.Console // SCS - Simple Commands System
         {
             AdvancedConsole.Title = "Simple Commands System";
 
-            // If you are not using System.Console in your program
+            // If you aren't using System.Console in your program
             // edit the SCS.System.AdvancedConsole class
             // and edit or don't use the SCS.Commands.ConsoleCommands class
 
             // Setting standard values
             Command.StandardPrefix = "!";
             Command.StandardDescription = "No desc.";
+
+            // The default of SCS.System.Command.StandardPrefix is "/"
+            // It using for the help command from the SCS.MainCommands class
 
             // Preparing commands for use 
             Command.RegisterCommands<MainCommands>(); // 1 variant 

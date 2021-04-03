@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SCS.System\SCS.System.csproj" />
+    <ProjectReference Include="..\SCS.MainCommands\SCS.MainCommands.csproj" />
+  </ItemGroup>
+
+</Project>

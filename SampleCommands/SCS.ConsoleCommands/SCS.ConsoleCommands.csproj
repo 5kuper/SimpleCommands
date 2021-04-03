@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ScsSystem\ScsSystem.csproj" />
-    <ProjectReference Include="..\ScsMainCommands\ScsMainCommands.csproj" />
+    <ProjectReference Include="..\..\ConsoleMusic\ConsoleMusic.csproj" />
+    <ProjectReference Include="..\SCS.MathCommands\SCS.MathCommands.csproj" />
   </ItemGroup>
 
 </Project>
