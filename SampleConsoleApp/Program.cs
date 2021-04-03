@@ -10,8 +10,9 @@ namespace SCS.Console // SCS - Simple Commands System
         {
             AdvancedConsole.Title = "Simple Commands System";
 
-            // If you are not using System.Console in your program,
-            // Edit the AdvancedConsole class and edit or don't use the ConsoleCommands class
+            // If you are not using System.Console in your program
+            // edit the SCS.System.AdvancedConsole class
+            // and edit or don't use the SCS.Commands.ConsoleCommands class
 
             // Setting standard values
             Command.StandardPrefix = "!";

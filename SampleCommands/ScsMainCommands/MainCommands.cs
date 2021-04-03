@@ -20,19 +20,40 @@ namespace SCS.Commands
             List<Command> commands;
             ListScanner ignoreInHelpFilter = new ListScanner("Help Ignore", ListScanner.TargetOfScanner.Tags, ListScanner.ScannerCondition.NotContains);
 
+            if (prefix != null && !Command.Prefixes.Contains(prefix))
+            {
+                if (Command.Prefixes.Count <= 1)
+                {
+                    AdvancedConsole.Warn(AdvancedConsole.WarningType.WrongArguments);
+                }
+                else
+                {
+                    AdvancedConsole.Warn("Invalid prefix!");
+                }
+                return;
+            }
+
             if (prefix == null)
             {
                 #region Colored text
                 AdvancedConsole.ColoredWriteLine(new CStr("Command to enter:\n"), new CStr(ConsoleColor.DarkCyan, "prefix "),
                     new CStr(ConsoleColor.Cyan, "name "), new CStr(ConsoleColor.Magenta, "argument1 argument2 argumentN\n"));
 
-                AdvancedConsole.ColoredWriteLine(new CStr("Command in help:\n"), 
-                    new CStr(ConsoleColor.DarkCyan, "prefix "), new CStr(ConsoleColor.Cyan, "name "), 
+                AdvancedConsole.ColoredWriteLine(new CStr("Command in help:\n"),
+                    new CStr(ConsoleColor.DarkCyan, "prefix "), new CStr(ConsoleColor.Cyan, "name "),
                     new CStr(ConsoleColor.DarkYellow, "parameter-type1 "), new CStr(ConsoleColor.Yellow, "parameter-name1"), new CStr(", "),
                     new CStr(ConsoleColor.DarkYellow, "parameter-type2 "), new CStr(ConsoleColor.Yellow, "parameter-name2 "),
                     new ColoredString("= "), new CStr(ConsoleColor.Magenta, "default-value "), new CStr(ConsoleColor.DarkGray, "| Description.\n"));
                 #endregion
+            }
 
+            if (Command.Prefixes.Count == 1)
+            {
+                prefix = Command.Prefixes[0];
+            }
+
+            if (prefix == null)
+            {
                 commands = Command.Find(ignoreInHelpFilter, new ListScanner("Help"));
             }
             else
