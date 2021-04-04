@@ -1,3 +1,6 @@
+## About branch
+**This branch contains an old solution where all code is in one project.**
+
 ## Folders
 - **System** - Main code
 - **Commands** - Sample commands
