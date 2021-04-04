@@ -1,3 +1,6 @@
+## About branch
+**This branch contains code that edited for build .NET Standard 2.0 libraries.**
+
 ## Navigation
 - **SCS.System** - Core library
 - **SampleCommands** - Libraries with sample commands
