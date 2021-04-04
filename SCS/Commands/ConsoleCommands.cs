@@ -162,39 +162,44 @@ namespace SCS.Commands
         [Command(Prefix, "steins-gate", "???")]
         public static void SteinsGateCommand()
         {
-            ShowWindow(ThisConsole, (int)ShowWindowType.Maximize);
-
             string musicPath, artPath;
 
             #if DEBUG
                 artPath = @"..\..\..\AsciiArts\SteinsGate.txt";
                 musicPath = @"..\..\..\ConsoleMusic\HackingToTheGate.xml";
             #else
-                artPath = @"AsciiArts\SteinsGate.xml";
+                artPath = @"AsciiArts\SteinsGate.txt";
                 musicPath = @"ConsoleMusic\HackingToTheGate.xml";
             #endif
 
-            Tune tune;
-
-            if (_hackingToTheGateTune == null)
+            try
             {
-                using FileStream stream = new FileStream(musicPath, FileMode.Open);
-                _hackingToTheGateTune = (Tune)TuneSerializer.Deserialize(stream);
-            }
-            tune = _hackingToTheGateTune;
-
-            using (StreamReader reader = new StreamReader(artPath))
-            {
-                tune.Play(() =>
+                if (_hackingToTheGateTune == null)
                 {
-                    if (reader.Peek() > -1)
-                    {
-                        Console.WriteLine(reader.ReadLine());
-                    }
-                });
-            }
+                    using FileStream stream = new FileStream(musicPath, FileMode.Open);
+                    _hackingToTheGateTune = (Tune)TuneSerializer.Deserialize(stream);
+                }
+                Tune tune = _hackingToTheGateTune;
 
-            ShowWindow(ThisConsole, (int)ShowWindowType.Restore);
+                using (StreamReader reader = new StreamReader(artPath))
+                {
+                    ShowWindow(ThisConsole, (int)ShowWindowType.Maximize);
+
+                    tune.Play(() =>
+                    {
+                        if (reader.Peek() > -1)
+                        {
+                            Console.WriteLine(reader.ReadLine());
+                        }
+                    });
+
+                    ShowWindow(ThisConsole, (int)ShowWindowType.Restore);
+                }
+            }
+            catch
+            {
+                AdvancedConsole.Warn("Command can't be executed!");
+            }
         }
     }
 }
