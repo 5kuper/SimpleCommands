@@ -16,7 +16,7 @@ namespace SCS.Commands
         private static readonly XmlSerializer TuneSerializer = new XmlSerializer(typeof(Tune));
         private static Tune _hackingToTheGateTune;
 
-        static ConsoleCommands() => DefaultTitle = new string(AdvancedConsole.Title);
+        static ConsoleCommands() => DefaultTitle = new string(AdvancedConsole.Title.ToCharArray());
 
         private ConsoleCommands() { }
 
@@ -176,8 +176,10 @@ namespace SCS.Commands
             {
                 if (_hackingToTheGateTune == null)
                 {
-                    using FileStream stream = new FileStream(musicPath, FileMode.Open);
-                    _hackingToTheGateTune = (Tune)TuneSerializer.Deserialize(stream);
+                    using (FileStream stream = new FileStream(musicPath, FileMode.Open))
+                    {
+                        _hackingToTheGateTune = (Tune)TuneSerializer.Deserialize(stream);
+                    }
                 }
                 Tune tune = _hackingToTheGateTune;
 

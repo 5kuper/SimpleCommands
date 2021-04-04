@@ -19,19 +19,40 @@ namespace SCS.System
         /// <summary>Scans the command using the TargetOfScan, ScanValue and ScanCondition specified in the constructor and returns result.</summary>
         public bool Scan(Command command)
         {
-            return TargetOfScan switch
+            bool result = false;
+
+            switch (TargetOfScan)
             {
-                TargetOfScanner.Prefix => Scan(command.Prefix),
-                TargetOfScanner.Name => Scan(command.Name),
-                TargetOfScanner.Description => Scan(command.Description),
-                TargetOfScanner.Tags => Scan(command.Tags),
-                TargetOfScanner.Method => Scan(command.Method),
-                TargetOfScanner.Class => Scan(command.Class),
-                TargetOfScanner.MethodName => Scan(command.Method.Name),
-                TargetOfScanner.ClassName => Scan(command.Class.Name),
-                TargetOfScanner.ContainsParameters => Scan(command.ContainsParameters),
-                _ => false
-            };
+                case TargetOfScanner.Prefix:
+                    result = Scan(command.Prefix);
+                    break;
+                case TargetOfScanner.Name:
+                    result = Scan(command.Name);
+                    break;
+                case TargetOfScanner.Description:
+                    result = Scan(command.Description);
+                    break;
+                case TargetOfScanner.Tags:
+                    result = Scan(command.Tags);
+                    break;
+                case TargetOfScanner.Method:
+                    result = Scan(command.Method);
+                    break;
+                case TargetOfScanner.Class:
+                    result = Scan(command.Class);
+                    break;
+                case TargetOfScanner.MethodName:
+                    result = Scan(command.Method.Name);
+                    break;
+                case TargetOfScanner.ClassName:
+                    result = Scan(command.Class.Name);
+                    break;
+                case TargetOfScanner.ContainsParameters:
+                    result = Scan(command.ContainsParameters);
+                    break;
+            }
+
+            return result;
         }
 
         protected abstract bool Scan(object valueOfTarget);

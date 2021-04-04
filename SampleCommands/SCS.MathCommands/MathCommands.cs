@@ -18,9 +18,11 @@ namespace SCS.Commands
         {
             try
             {
-                using DataTable table = new DataTable();
-                object result = table.Compute(expression, string.Empty);
-                AdvancedConsole.WriteLine($"Result: {result}");
+                using (DataTable table = new DataTable())
+                {
+                    object result = table.Compute(expression, string.Empty);
+                    AdvancedConsole.WriteLine($"Result: {result}");
+                }
             }
             catch
             {
